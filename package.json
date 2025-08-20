@@ -1,0 +1,30 @@
+{
+  "name": "baltaragis-fe",
+  "version": "0.1.0",
+  "description": "Baltaragis Frontend - Artist portfolio and shop",
+  "type": "module",
+  "scripts": {
+    "dev": "echo 'Frontend development server not yet configured'",
+    "build": "echo 'Build process not yet configured'",
+    "preview": "echo 'Preview process not yet configured'",
+    "type-check": "tsc --noEmit",
+    "lint": "echo 'Linting not yet configured'",
+    "test": "echo 'Testing not yet configured'"
+  },
+  "keywords": [
+    "artist",
+    "portfolio",
+    "shop",
+    "frontend",
+    "react",
+    "typescript"
+  ],
+  "author": "Baltaragis",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

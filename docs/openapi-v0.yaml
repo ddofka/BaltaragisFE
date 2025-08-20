@@ -1,0 +1,2018 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+tags:
+- name: "Admin: Translations"
+  description: Admin endpoints for managing translations
+- name: Payment
+  description: Payment and checkout endpoints
+- name: "Admin: Product Photos"
+  description: Product photo upload and management operations
+- name: "Admin: Products"
+  description: Product management endpoints
+- name: "Admin: Pages"
+  description: Page management endpoints
+- name: Internationalization
+  description: Public endpoints for retrieving translations
+- name: "Admin: Artist"
+  description: Artist profile management endpoints
+- name: Stub Checkout
+  description: Development stub for payment simulation
+- name: "Admin: Product Photos"
+  description: Product photo management endpoints
+paths:
+  /api/v1/admin/products/{id}:
+    get:
+      tags:
+      - "Admin: Products"
+      summary: Get product by ID
+      description: Get a specific product by its ID for admin management
+      operationId: getProductById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Product found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+    put:
+      tags:
+      - "Admin: Products"
+      summary: Update product
+      description: Update an existing product by ID
+      operationId: updateProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProductRequest"
+            examples:
+              UpdateProductRequest:
+                description: UpdateProductRequest
+                value:
+                  name: Updated Sunset Print
+                  priceCents: 5000
+                  isPublished: false
+        required: true
+      responses:
+        "200":
+          description: Product updated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Product not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+    delete:
+      tags:
+      - "Admin: Products"
+      summary: Delete product
+      description: Delete a product by ID
+      operationId: deleteProduct
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Product deleted successfully
+        "404":
+          description: Product not found
+  /api/v1/admin/product-photos/{id}:
+    get:
+      tags:
+      - "Admin: Product Photos"
+      summary: Get photo by ID
+      description: Get a specific product photo by its ID
+      operationId: getPhotoById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Photo found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+        "404":
+          description: Photo not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+    put:
+      tags:
+      - "Admin: Product Photos"
+      summary: Update photo
+      description: Update an existing product photo by ID
+      operationId: updatePhoto
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProductPhotoRequest"
+            examples:
+              UpdateProductPhotoRequest:
+                description: UpdateProductPhotoRequest
+                value:
+                  url: https://example.com/photos/sunset1-updated.jpg
+                  alt: Updated Sunset Print view
+                  sortOrder: 2
+        required: true
+      responses:
+        "200":
+          description: Photo updated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+        "404":
+          description: Photo not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+    delete:
+      tags:
+      - "Admin: Product Photos"
+      summary: Delete photo
+      description: Delete a product photo by ID
+      operationId: deletePhoto
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Photo deleted successfully
+        "404":
+          description: Photo not found
+  /api/v1/admin/pages/{id}:
+    get:
+      tags:
+      - "Admin: Pages"
+      summary: Get page by ID
+      description: Get a specific page by its ID for admin management
+      operationId: getPageById
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Page found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+        "404":
+          description: Page not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+    put:
+      tags:
+      - "Admin: Pages"
+      summary: Update page
+      description: Update an existing page by ID
+      operationId: updatePage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePageRequest"
+            examples:
+              UpdatePageRequest:
+                description: UpdatePageRequest
+                value:
+                  title: Updated About Us
+                  contentMd: |-
+                    # Updated About Our Studio
+
+                    We are very passionate about art...
+                  isPublished: false
+        required: true
+      responses:
+        "200":
+          description: Page updated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+        "404":
+          description: Page not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+    delete:
+      tags:
+      - "Admin: Pages"
+      summary: Delete page
+      description: Delete a page by ID
+      operationId: deletePage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Page deleted successfully
+        "404":
+          description: Page not found
+  /api/v1/admin/artist:
+    get:
+      tags:
+      - "Admin: Artist"
+      summary: Get artist profile
+      description: Get the current artist profile for admin management
+      operationId: getArtistProfile
+      responses:
+        "200":
+          description: Artist profile found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArtistProfile"
+        "404":
+          description: Artist profile not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArtistProfile"
+    put:
+      tags:
+      - "Admin: Artist"
+      summary: Update artist profile
+      description: Update the artist profile information
+      operationId: updateArtistProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateArtistProfileRequest"
+            examples:
+              UpdateArtistProfileRequest:
+                description: UpdateArtistProfileRequest
+                value:
+                  name: Baltaragis
+                  bio: Contemporary artist blending traditional forms with modern
+                    techniques.
+                  heroImageUrl: https://example.com/hero-updated.jpg
+                  socials: "{\"instagram\":\"https://instagram.com/baltaragis\",\"\
+                    twitter\":\"https://x.com/baltaragis\",\"website\":\"https://baltaragis.com\"\
+                    }"
+        required: true
+      responses:
+        "200":
+          description: Artist profile updated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArtistProfile"
+  /api/v1/products/{slug}/waitlist:
+    post:
+      tags:
+      - Public
+      summary: Join stock waitlist
+      operationId: addToWaitlist
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WaitlistRequest"
+            example:
+              email: user@example.com
+        required: true
+      responses:
+        "200":
+          description: Waitlist status
+          content:
+            '*/*':
+              schema:
+                type: string
+                enum:
+                - ADDED
+                - ALREADY_SUBSCRIBED
+                - NOT_ELIGIBLE
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api/v1/payments/stub-checkout/simulate-success:
+    post:
+      tags:
+      - Stub Checkout
+      summary: Simulate successful payment
+      description: Development endpoint to simulate successful payment
+      operationId: simulateSuccessfulPayment
+      parameters:
+      - name: sessionId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/v1/payments/stub-checkout/simulate-cancel:
+    post:
+      tags:
+      - Stub Checkout
+      summary: Simulate cancelled payment
+      description: Development endpoint to simulate cancelled payment
+      operationId: simulateCancelledPayment
+      parameters:
+      - name: sessionId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/v1/orders:
+    post:
+      tags:
+      - Public
+      summary: Create order (single item)
+      operationId: createOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+            examples:
+              CreateOrderRequest:
+                description: CreateOrderRequest
+                value:
+                  productSlug: sunset-print
+                  qty: 1
+                  email: user@example.com
+        required: true
+      responses:
+        "200":
+          description: Order created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CreateOrderResponse"
+              example:
+                orderId: 123
+                status: PENDING
+                total: "45.00"
+                currency: EUR
+        "400":
+          description: Validation failed
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+              example:
+                type: https://api.baltaragis.dev/problems/validation_failed
+                title: Bad Request
+                status: 400
+                detail: Invalid order request
+                code: VALIDATION_FAILED
+                errors:
+                - field: qty
+                  message: Quantity must be greater than 0
+        "404":
+          description: Product not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+        "409":
+          description: Insufficient stock
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+              example:
+                type: https://api.baltaragis.dev/problems/insufficient_stock
+                title: Conflict
+                detail: Insufficient stock
+                code: INSUFFICIENT_STOCK
+  /api/v1/orders/checkout-session:
+    post:
+      tags:
+      - Payment
+      summary: Create checkout session
+      description: Create a checkout session for payment processing
+      operationId: createCheckoutSession
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCheckoutSessionRequest"
+        required: true
+      responses:
+        "200":
+          description: Checkout session created
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CheckoutSessionResponse"
+        "409":
+          description: Insufficient stock
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CheckoutSessionResponse"
+        "400":
+          description: Invalid request data
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CheckoutSessionResponse"
+        "404":
+          description: Product not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CheckoutSessionResponse"
+        "503":
+          description: Payments disabled
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CheckoutSessionResponse"
+  /api/v1/admin/translations:
+    post:
+      tags:
+      - "Admin: Translations"
+      summary: Create or update a translation
+      description: "Create a new translation or update an existing one. If a translation\
+        \ with the same key and locale exists, it will be updated."
+      operationId: upsertTranslation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateTranslationRequest"
+        required: true
+      responses:
+        "201":
+          description: Translation created/updated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TranslationResponse"
+        "400":
+          description: Invalid request data
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TranslationResponse"
+  /api/v1/admin/translations/bulk:
+    post:
+      tags:
+      - "Admin: Translations"
+      summary: Bulk upsert translations
+      description: Create or update multiple translations in a single request. Useful
+        for importing translation files or bulk updates.
+      operationId: bulkUpsertTranslations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkTranslationRequest"
+        required: true
+      responses:
+        "400":
+          description: Invalid request data
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TranslationResponse"
+        "201":
+          description: Translations created/updated successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TranslationResponse"
+  /api/v1/admin/products:
+    get:
+      tags:
+      - "Admin: Products"
+      summary: List all products
+      description: Get all products (published and unpublished) for admin management
+      operationId: getAllProducts
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      tags:
+      - "Admin: Products"
+      summary: Create new product
+      description: Create a new product with validation for duplicate slugs
+      operationId: createProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductRequest"
+            examples:
+              CreateProductRequest:
+                description: CreateProductRequest
+                value:
+                  name: Sunset Print
+                  slug: sunset-print
+                  shortDesc: A3 giclée print
+                  longDesc: High-quality giclée print of a sunset.
+                  priceCents: 4500
+                  currency: EUR
+                  quantity: 10
+                  isPublished: true
+        required: true
+      responses:
+        "201":
+          description: Product created successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          description: Validation failed
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Product"
+        "409":
+          description: Product with duplicate slug already exists
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+              example:
+                type: https://api.baltaragis.dev/problems/conflict
+                title: Conflict
+                status: 409
+                detail: Product with slug 'sunset-print' already exists
+                code: DUPLICATE_SLUG
+  /api/v1/admin/products/{productId}/photos/upload:
+    post:
+      tags:
+      - "Admin: Product Photos"
+      summary: Upload a product photo
+      description: "Upload a single photo for a product. Supports JPEG, PNG, and WebP\
+        \ formats up to 10MB."
+      operationId: uploadPhoto
+      parameters:
+      - name: productId
+        in: path
+        description: Product ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      - name: altText
+        in: query
+        description: Alt text for accessibility
+        required: false
+        schema:
+          type: string
+        example: Product image
+      - name: sortOrder
+        in: query
+        description: Sort order for display
+        required: false
+        schema:
+          type: integer
+          format: int32
+        example: 1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: "Image file (JPEG, PNG, or WebP, max 10MB)"
+                  format: binary
+      responses:
+        "400":
+          description: "Invalid file format, size, or missing file"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PhotoUploadResponse"
+        "201":
+          description: Photo uploaded successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PhotoUploadResponse"
+        "404":
+          description: Product not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PhotoUploadResponse"
+  /api/v1/admin/products/{productId}/photos/upload-multiple:
+    post:
+      tags:
+      - "Admin: Product Photos"
+      summary: Upload multiple product photos
+      description: "Upload multiple photos for a product. Supports JPEG, PNG, and\
+        \ WebP formats up to 10MB each."
+      operationId: uploadMultiplePhotos
+      parameters:
+      - name: productId
+        in: path
+        description: Product ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+        example: 1
+      - name: altTexts
+        in: query
+        description: Alt texts for accessibility
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - files
+              type: object
+              properties:
+                files:
+                  type: array
+                  description: "Image files (JPEG, PNG, or WebP, max 10MB each)"
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        "400":
+          description: "Invalid file format, size, or missing files"
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PhotoUploadResponse"
+        "201":
+          description: Photos uploaded successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PhotoUploadResponse"
+        "404":
+          description: Product not found
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PhotoUploadResponse"
+  /api/v1/admin/product-photos:
+    get:
+      tags:
+      - "Admin: Product Photos"
+      summary: List all product photos
+      description: Get all product photos for admin management
+      operationId: getAllPhotos
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductPhoto"
+    post:
+      tags:
+      - "Admin: Product Photos"
+      summary: Create new product photo
+      description: Create a new product photo
+      operationId: createPhoto
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductPhotoRequest"
+            examples:
+              CreateProductPhotoRequest:
+                description: CreateProductPhotoRequest
+                value:
+                  productId: 1
+                  url: https://example.com/photos/sunset1.jpg
+                  alt: Sunset Print main view
+                  sortOrder: 1
+                  width: 1200
+                  height: 800
+        required: true
+      responses:
+        "201":
+          description: Photo created successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+        "400":
+          description: Validation failed
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+        "404":
+          description: Product not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductPhoto"
+  /api/v1/admin/pages:
+    get:
+      tags:
+      - "Admin: Pages"
+      summary: List all pages
+      description: Get all pages (published and unpublished) for admin management
+      operationId: getAllPages
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Page"
+    post:
+      tags:
+      - "Admin: Pages"
+      summary: Create new page
+      description: Create a new page with validation for duplicate slugs
+      operationId: createPage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePageRequest"
+            examples:
+              CreatePageRequest:
+                description: CreatePageRequest
+                value:
+                  title: About Us
+                  slug: about
+                  contentMd: |-
+                    # About Our Studio
+
+                    We are passionate about art...
+                  isPublished: true
+        required: true
+      responses:
+        "201":
+          description: Page created successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+        "400":
+          description: Validation failed
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+        "409":
+          description: Page with duplicate slug already exists
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+              example:
+                type: https://api.baltaragis.dev/problems/conflict
+                title: Conflict
+                status: 409
+                detail: Page with slug 'about' already exists
+                code: DUPLICATE_SLUG
+  /api/v1/products:
+    get:
+      tags:
+      - Public
+      summary: List published products
+      operationId: listProducts
+      parameters:
+      - name: q
+        in: query
+        description: Full-text query across name/shortDesc/longDesc
+        required: false
+        schema:
+          type: string
+        example: print
+      - name: page
+        in: query
+        description: Page number (0-based)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+        example: 0
+      - name: size
+        in: query
+        description: Page size
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 12
+        example: 12
+      responses:
+        "200":
+          description: Page of products
+          headers:
+            Cache-Control:
+              description: Cache control directive
+              style: simple
+              schema:
+                type: string
+              example: "public, max-age=60"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageProductCard"
+  /api/v1/products/{slug}:
+    get:
+      tags:
+      - Public
+      summary: Get product details
+      operationId: getProduct
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Product detail
+          headers:
+            Cache-Control:
+              description: Cache control directive
+              style: simple
+              schema:
+                type: string
+              example: "public, max-age=300"
+            ETag:
+              description: Entity tag for caching
+              style: simple
+              schema:
+                type: string
+              example: def456
+            Last-Modified:
+              description: Last modification date
+              style: simple
+              schema:
+                type: string
+              example: "Wed, 21 Oct 2015 07:28:00 GMT"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+        "304":
+          description: Not modified (conditional request)
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ProductDetail"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+              example:
+                type: https://api.baltaragis.dev/problems/not_found
+                title: Not Found
+                status: 404
+                detail: Product not found
+                instance: /api/v1/products/bad
+                code: NOT_FOUND
+  /api/v1/payments/stub-checkout:
+    get:
+      tags:
+      - Stub Checkout
+      summary: Stub checkout page
+      description: Development stub page to simulate payment flow
+      operationId: stubCheckout
+      parameters:
+      - name: sessionId
+        in: query
+        description: Checkout session ID
+        required: true
+        schema:
+          type: string
+      - name: successUrl
+        in: query
+        description: Success redirect URL
+        required: false
+        schema:
+          type: string
+      - name: cancelUrl
+        in: query
+        description: Cancel redirect URL
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/pages:
+    get:
+      tags:
+      - Public
+      summary: List published pages
+      operationId: pages
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PageDto"
+  /api/v1/pages/{slug}:
+    get:
+      tags:
+      - Public
+      summary: Get page by slug
+      operationId: pageBySlug
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Page
+          headers:
+            Cache-Control:
+              description: Cache control directive
+              style: simple
+              schema:
+                type: string
+              example: "public, max-age=180"
+            ETag:
+              description: Entity tag for caching
+              style: simple
+              schema:
+                type: string
+              example: ghi789
+            Last-Modified:
+              description: Last modification date
+              style: simple
+              schema:
+                type: string
+              example: "Wed, 21 Oct 2015 07:28:00 GMT"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageDto"
+        "304":
+          description: Not modified (conditional request)
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageDto"
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Problem"
+  /api/v1/orders/checkout-session/status:
+    get:
+      tags:
+      - Payment
+      summary: Check payment status
+      description: Check the current status of a checkout session
+      operationId: getCheckoutSessionStatus
+      parameters:
+      - name: sessionId
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Session status retrieved
+          content:
+            '*/*':
+              schema:
+                type: string
+        "404":
+          description: Session not found
+          content:
+            '*/*':
+              schema:
+                type: string
+  /api/v1/i18n/{locale}:
+    get:
+      tags:
+      - Internationalization
+      summary: Get translations for a locale
+      description: Retrieve all translations for a specific locale as a key-value
+        map. Frontend can use this to load all UI translations at once.
+      operationId: getTranslations
+      parameters:
+      - name: locale
+        in: path
+        description: Locale code (en-US or lt-LT)
+        required: true
+        schema:
+          type: string
+        example: en-US
+      responses:
+        "200":
+          description: Translations retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                  common.add_to_cart: Add to Cart
+                  common.loading: Loading...
+        "400":
+          description: Unsupported locale
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /api/v1/i18n/locales:
+    get:
+      tags:
+      - Internationalization
+      summary: Get supported locales
+      description: Retrieve all supported locale codes.
+      operationId: getSupportedLocales
+      responses:
+        "200":
+          description: Supported locales retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                - en-US
+                - lt-LT
+  /api/v1/i18n/current:
+    get:
+      tags:
+      - Internationalization
+      summary: Get current locale
+      description: "Get the resolved locale for the current request based on IP country,\
+        \ Accept-Language header, and explicit overrides."
+      operationId: getCurrentLocale
+      responses:
+        "200":
+          description: Current locale retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: string
+                example: en-US
+  /api/v1/artist:
+    get:
+      tags:
+      - Public
+      summary: Get artist profile
+      operationId: getArtist
+      responses:
+        "200":
+          description: Artist profile
+          headers:
+            Cache-Control:
+              description: Cache control directive
+              style: simple
+              schema:
+                type: string
+              example: "public, max-age=600"
+            ETag:
+              description: Entity tag for caching
+              style: simple
+              schema:
+                type: string
+              example: abc123
+            Last-Modified:
+              description: Last modification date
+              style: simple
+              schema:
+                type: string
+              example: "Wed, 21 Oct 2015 07:28:00 GMT"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArtistDto"
+        "304":
+          description: Not modified (conditional request)
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ArtistDto"
+  /api/v1/admin/translations/locales:
+    get:
+      tags:
+      - "Admin: Translations"
+      summary: Get available locales
+      description: Retrieve all locales that have translations.
+      operationId: getAvailableLocales
+      responses:
+        "200":
+          description: Locales retrieved successfully
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                - en-US
+                - lt-LT
+  /api/v1/admin/translations/locale/{locale}:
+    get:
+      tags:
+      - "Admin: Translations"
+      summary: Get translations by locale
+      description: Retrieve all translations for a specific locale.
+      operationId: getTranslationsByLocale
+      parameters:
+      - name: locale
+        in: path
+        description: Locale code (en-US or lt-LT)
+        required: true
+        schema:
+          type: string
+        example: en-US
+      responses:
+        "200":
+          description: Translations retrieved successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TranslationResponse"
+        "400":
+          description: Unsupported locale
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TranslationResponse"
+  /api/v1/admin/translations/key/{key}:
+    get:
+      tags:
+      - "Admin: Translations"
+      summary: Get translations by key
+      description: Retrieve all translations for a specific key across all locales.
+      operationId: getTranslationsByKey
+      parameters:
+      - name: key
+        in: path
+        description: Translation key
+        required: true
+        schema:
+          type: string
+        example: common.add_to_cart
+      responses:
+        "200":
+          description: Translations retrieved successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TranslationResponse"
+  /api/v1/admin/product-photos/product/{productId}:
+    get:
+      tags:
+      - "Admin: Product Photos"
+      summary: Get photos by product ID
+      description: "Get all photos for a specific product, ordered by sort order"
+      operationId: getPhotosByProductId
+      parameters:
+      - name: productId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductPhoto"
+  /api/v1/admin/translations/{key}/{locale}:
+    delete:
+      tags:
+      - "Admin: Translations"
+      summary: Delete a translation
+      description: Delete a specific translation by key and locale.
+      operationId: deleteTranslation
+      parameters:
+      - name: key
+        in: path
+        description: Translation key
+        required: true
+        schema:
+          type: string
+        example: common.add_to_cart
+      - name: locale
+        in: path
+        description: Locale code (en-US or lt-LT)
+        required: true
+        schema:
+          type: string
+        example: en-US
+      responses:
+        "204":
+          description: Translation deleted successfully
+        "400":
+          description: Unsupported locale
+components:
+  schemas:
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 0
+          type: string
+          example: Sunset Print
+        shortDesc:
+          maxLength: 255
+          minLength: 0
+          type: string
+          example: A3 giclée print
+        longDesc:
+          type: string
+          example: High-quality giclée print of a sunset.
+        priceCents:
+          type: integer
+          description: "Price in cents (e.g., 4500 = €45.00)"
+          format: int32
+          example: 4500
+        currency:
+          maxLength: 3
+          minLength: 0
+          type: string
+          example: EUR
+        quantity:
+          type: integer
+          format: int32
+          example: 10
+        isPublished:
+          type: boolean
+          example: true
+      description: Request to update an existing product
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        slug:
+          type: string
+        shortDesc:
+          type: string
+        longDesc:
+          type: string
+        priceCents:
+          type: integer
+          format: int32
+        currency:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        isPublished:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdateProductPhotoRequest:
+      type: object
+      properties:
+        url:
+          type: string
+          example: https://example.com/photos/sunset1.jpg
+        alt:
+          type: string
+          example: Sunset Print main view
+        sortOrder:
+          type: integer
+          format: int32
+          example: 1
+        width:
+          type: integer
+          format: int32
+          example: 1200
+        height:
+          type: integer
+          format: int32
+          example: 800
+      description: Request to update an existing product photo
+    ProductPhoto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        product:
+          $ref: "#/components/schemas/Product"
+        url:
+          type: string
+        alt:
+          type: string
+        sortOrder:
+          type: integer
+          format: int32
+        width:
+          type: integer
+          format: int32
+        height:
+          type: integer
+          format: int32
+    UpdatePageRequest:
+      type: object
+      properties:
+        title:
+          maxLength: 255
+          minLength: 0
+          type: string
+          example: Home
+        contentMd:
+          type: string
+          description: Page content in Markdown
+          example: "# Welcome to Baltaragis"
+        isPublished:
+          type: boolean
+          example: true
+      description: Request to update an existing page
+    Page:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        slug:
+          type: string
+        contentMd:
+          type: string
+        isPublished:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    UpdateArtistProfileRequest:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 0
+          type: string
+          example: Baltaragis
+        bio:
+          type: string
+          description: Artist biography
+          example: Contemporary artist blending traditional forms.
+        heroImageUrl:
+          type: string
+          description: Hero image URL
+          example: https://example.com/hero.jpg
+        socials:
+          type: string
+          description: Social media links as JSON
+          example: "{\"instagram\":\"https://instagram.com/baltaragis\",\"twitter\"\
+            :\"https://x.com/baltaragis\"}"
+      description: Request to update artist profile
+    ArtistProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        bio:
+          type: string
+        heroImageUrl:
+          type: string
+        socials:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+    WaitlistRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: user@example.com
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+          example: qty
+        message:
+          type: string
+          example: Quantity must be greater than 0
+    Problem:
+      type: object
+      properties:
+        type:
+          type: string
+          example: https://api.baltaragis.dev/problems/insufficient_stock
+        title:
+          type: string
+          example: Conflict
+        status:
+          type: integer
+          format: int32
+          example: 409
+        detail:
+          type: string
+          example: Insufficient stock
+        instance:
+          type: string
+          example: /api/v1/orders
+        code:
+          type: string
+          example: INSUFFICIENT_STOCK
+        timestamp:
+          type: string
+          example: 2025-01-01T00:00:00Z
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/FieldError"
+      description: RFC-7807 Problem Details
+    CreateOrderRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+          example: 1
+        productSlug:
+          type: string
+          example: sunset-print
+        qty:
+          type: integer
+          format: int32
+          example: 1
+        email:
+          type: string
+          example: user@example.com
+    CreateOrderResponse:
+      type: object
+      properties:
+        orderId:
+          type: integer
+          format: int64
+          example: 123
+        status:
+          type: string
+          example: PENDING
+        total:
+          type: string
+          example: "45.0"
+        currency:
+          type: string
+          example: EUR
+    CreateCheckoutSessionRequest:
+      required:
+      - email
+      - productSlug
+      - qty
+      type: object
+      properties:
+        productSlug:
+          type: string
+          description: Product slug to purchase
+          example: sunset-print
+        qty:
+          type: integer
+          description: Quantity to purchase
+          format: int32
+          example: 1
+        email:
+          type: string
+          description: Customer email address
+          example: user@example.com
+        successUrl:
+          type: string
+          description: URL to redirect after successful payment
+          example: http://localhost:3000/success
+        cancelUrl:
+          type: string
+          description: URL to redirect after cancelled payment
+          example: http://localhost:3000/cancel
+      description: Request to create a checkout session
+    CheckoutSessionResponse:
+      type: object
+      properties:
+        checkoutUrl:
+          type: string
+          description: URL to redirect customer for payment
+          example: https://checkout.stripe.com/pay/cs_test_123
+        sessionId:
+          type: string
+          description: Checkout session identifier
+          example: cs_test_123
+        status:
+          type: string
+          description: Current status of the checkout session
+          example: PENDING
+    CreateTranslationRequest:
+      required:
+      - key
+      - locale
+      - value
+      type: object
+      properties:
+        key:
+          type: string
+          description: Translation key identifier
+          example: common.add_to_cart
+        locale:
+          pattern: ^(en-US|lt-LT)$
+          type: string
+          description: Locale code (en-US or lt-LT)
+          example: en-US
+        value:
+          type: string
+          description: Translated text value
+          example: Add to Cart
+      description: Request to create or update a translation
+    TranslationResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Translation ID
+          format: int64
+          example: 1
+        key:
+          type: string
+          description: Translation key
+          example: common.add_to_cart
+        locale:
+          type: string
+          description: Locale code
+          example: en-US
+        value:
+          type: string
+          description: Translated text value
+          example: Add to Cart
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+      description: Translation entity response
+    BulkTranslationRequest:
+      required:
+      - translations
+      type: object
+      properties:
+        translations:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: string
+              description: Map of locale to key-value translation pairs
+              example: "{\"en-US\":{\"common.add_to_cart\":\"Add to Cart\"},\"lt-LT\"\
+                :{\"common.add_to_cart\":\"Pridėti į krepšelį\"}}"
+            description: Map of locale to key-value translation pairs
+            example:
+              en-US:
+                common.add_to_cart: Add to Cart
+              lt-LT:
+                common.add_to_cart: Pridėti į krepšelį
+          description: Map of locale to key-value translation pairs
+          example:
+            en-US:
+              common.add_to_cart: Add to Cart
+            lt-LT:
+              common.add_to_cart: Pridėti į krepšelį
+      description: Request for bulk translation operations
+    CreateProductRequest:
+      required:
+      - name
+      - priceCents
+      - quantity
+      - slug
+      type: object
+      properties:
+        name:
+          maxLength: 255
+          minLength: 0
+          type: string
+          example: Sunset Print
+        slug:
+          maxLength: 255
+          minLength: 0
+          pattern: "^[a-z0-9-]+$"
+          type: string
+          example: sunset-print
+        shortDesc:
+          type: string
+          description: Short description
+          example: A3 giclée print
+        longDesc:
+          type: string
+          description: Long description
+          example: High-quality giclée print of a sunset.
+        priceCents:
+          type: integer
+          description: "Price in cents (e.g., 4500 = €45.00)"
+          format: int32
+          example: 4500
+        currency:
+          maxLength: 3
+          minLength: 0
+          type: string
+          example: EUR
+          default: EUR
+        quantity:
+          type: integer
+          format: int32
+          example: 10
+          default: 0
+        isPublished:
+          type: boolean
+          example: true
+          default: false
+      description: Request to create a new product
+    PhotoUploadResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Photo ID
+          format: int64
+          example: 1
+        url:
+          type: string
+          description: Public URL of the uploaded photo
+          example: http://localhost:8080/media/1/sunset_print_1234567890.jpg
+        alt:
+          type: string
+          description: Alt text for accessibility
+          example: Sunset print product image
+        width:
+          type: integer
+          description: Image width in pixels
+          format: int32
+          example: 1920
+        height:
+          type: integer
+          description: Image height in pixels
+          format: int32
+          example: 1080
+        sortOrder:
+          type: integer
+          description: Sort order for display
+          format: int32
+          example: 1
+        filename:
+          type: string
+          description: Filename of the uploaded file
+          example: sunset_print_1234567890.jpg
+      description: Response after uploading a product photo
+    CreateProductPhotoRequest:
+      required:
+      - productId
+      - url
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+          example: 1
+        url:
+          type: string
+          example: https://example.com/photos/sunset1.jpg
+        alt:
+          type: string
+          example: Sunset Print main view
+        sortOrder:
+          type: integer
+          format: int32
+          example: 1
+          default: 0
+        width:
+          type: integer
+          format: int32
+          example: 1200
+        height:
+          type: integer
+          format: int32
+          example: 800
+      description: Request to create a new product photo
+    CreatePageRequest:
+      required:
+      - slug
+      - title
+      type: object
+      properties:
+        title:
+          maxLength: 255
+          minLength: 0
+          type: string
+          example: Home
+        slug:
+          maxLength: 255
+          minLength: 0
+          pattern: "^[a-z0-9-]+$"
+          type: string
+          example: home
+        contentMd:
+          type: string
+          description: Page content in Markdown
+          example: "# Welcome to Baltaragis"
+        isPublished:
+          type: boolean
+          example: true
+          default: false
+      description: Request to create a new page
+    PageProductCard:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductCard"
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        unpaged:
+          type: boolean
+        paged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        offset:
+          type: integer
+          format: int64
+        sort:
+          $ref: "#/components/schemas/SortObject"
+    ProductCard:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Sunset Print
+        slug:
+          type: string
+          example: sunset-print
+        price:
+          type: string
+          description: Decimal price as string
+          example: "45.0"
+        currency:
+          type: string
+          example: EUR
+        thumbnailUrl:
+          type: string
+          example: https://cdn.example.com/p/sunset1.jpg
+        inStock:
+          type: boolean
+      description: Compact product view for listings
+    SortObject:
+      type: object
+      properties:
+        unsorted:
+          type: boolean
+        sorted:
+          type: boolean
+        empty:
+          type: boolean
+    ProductDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Sunset Print
+        slug:
+          type: string
+          example: sunset-print
+        price:
+          type: string
+          example: "45.0"
+        currency:
+          type: string
+          example: EUR
+        longDesc:
+          type: string
+          example: High-quality giclée print of a sunset.
+        quantity:
+          type: integer
+          format: int32
+          example: 3
+        photos:
+          type: array
+          description: Photo URLs
+          items:
+            type: string
+            description: Photo URLs
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+        inStock:
+          type: boolean
+      description: Product detail view
+    PageDto:
+      type: object
+      properties:
+        title:
+          type: string
+          example: Home
+        slug:
+          type: string
+          example: home
+        contentMd:
+          type: string
+          example: "# Welcome to Baltaragis"
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
+    ArtistDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Baltaragis
+        bio:
+          type: string
+          example: Contemporary artist blending traditional forms.
+        heroImageUrl:
+          type: string
+          example: https://cdn.example.com/hero.jpg
+        socials:
+          type: string
+          example: "{\"instagram\":\"https://instagram.com/baltaragis\"}"
+        updatedAt:
+          type: string
+          description: Last update timestamp
+          format: date-time
