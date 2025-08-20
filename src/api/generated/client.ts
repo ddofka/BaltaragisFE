@@ -53,7 +53,8 @@ class ApiClient {
         return {} as T;
       }
 
-      return await response.json();
+      const data = await response.json();
+      return data;
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;
@@ -72,16 +73,22 @@ class ApiClient {
 
   // GET requests
   private async get<T>(endpoint: string, params?: Record<string, any>): Promise<T> {
-    const url = new URL(`${this.baseUrl}${endpoint}`);
+    let finalUrl = endpoint;
+    
     if (params) {
+      const searchParams = new URLSearchParams();
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined && value !== null) {
-          url.searchParams.append(key, String(value));
+          searchParams.append(key, String(value));
         }
       });
+      const queryString = searchParams.toString();
+      if (queryString) {
+        finalUrl += `?${queryString}`;
+      }
     }
     
-    return this.request<T>(url.pathname + url.search);
+    return this.request<T>(finalUrl);
   }
 
   // POST requests

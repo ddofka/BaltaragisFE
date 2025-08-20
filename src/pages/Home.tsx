@@ -1,26 +1,30 @@
 import { Link } from 'react-router-dom'
+import { useI18n } from '../contexts/I18nContext'
+import { usePageTitle } from '../hooks/usePageTitle'
 
 function Home() {
+  const { t } = useI18n()
+  usePageTitle('home.page_title')
   return (
     <div className="page home-page">
       <section className="hero">
-        <h1>Welcome to Baltaragis</h1>
-        <p>Contemporary artist blending traditional forms with modern techniques</p>
+        <h1>{t('home.welcome')}</h1>
+        <p>{t('home.subtitle')}</p>
         <div className="hero-actions">
           <Link to="/products" className="btn btn-primary">
-            View Artwork
+            {t('home.view_artwork')}
           </Link>
           <Link to="/about" className="btn btn-secondary">
-            Learn More
+            {t('home.learn_more')}
           </Link>
         </div>
       </section>
 
       <section className="featured">
-        <h2>Featured Works</h2>
-        <p>Discover our latest collection of prints and artwork</p>
+        <h2>{t('home.featured_works')}</h2>
+        <p>{t('home.featured_description')}</p>
         <Link to="/products" className="btn btn-outline">
-          Browse All Products
+          {t('home.browse_all')}
         </Link>
       </section>
     </div>

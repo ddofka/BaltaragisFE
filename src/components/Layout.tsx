@@ -1,5 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import { ReactNode } from 'react'
+import LanguageSwitcher from './LanguageSwitcher'
+import { useI18n } from '../contexts/I18nContext'
 
 interface LayoutProps {
   children: ReactNode
@@ -7,6 +9,19 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   const location = useLocation()
+  const { t, isInitializing } = useI18n()
+
+  // Show loading state while locale is being determined
+  if (isInitializing) {
+    return (
+      <div className="app">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -25,20 +40,21 @@ function Layout({ children }: LayoutProps) {
           <ul className="nav-links">
             <li>
               <Link to="/" className={isActive('/') ? 'active' : ''}>
-                Home
+                {t('nav.home')}
               </Link>
             </li>
             <li>
               <Link to="/about" className={isActive('/about') ? 'active' : ''}>
-                About
+                {t('nav.about')}
               </Link>
             </li>
             <li>
               <Link to="/products" className={isActive('/products') ? 'active' : ''}>
-                Products
+                {t('nav.products')}
               </Link>
             </li>
           </ul>
+          <LanguageSwitcher />
         </nav>
       </header>
 

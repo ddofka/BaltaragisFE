@@ -119,6 +119,59 @@ When the backend API changes:
 2. **Update the generated files** in `src/api/generated/` based on the new spec
 3. **Test connectivity** - the app will automatically check API endpoints on startup
 
+### Internationalization (i18n)
+
+The app supports Lithuanian (LT) and English (EN) languages with smart locale detection:
+
+#### Locale Priority
+1. **User choice** - Saved in localStorage (`baltaragis-locale`)
+2. **Backend IP detection** - Uses `/api/v1/i18n/current` endpoint
+3. **Browser language** - Falls back to Accept-Language header
+4. **Default** - English (EN) as final fallback
+
+#### Adding/Changing Translations
+
+Translations are managed via the backend admin API:
+
+1. **Add new translation:**
+   ```bash
+   POST /api/v1/i18n/admin/translations
+   {
+     "key": "new.key",
+     "locale": "en-US",
+     "value": "English text"
+   }
+   ```
+
+2. **Bulk import translations:**
+   ```bash
+   POST /api/v1/i18n/admin/translations/bulk
+   {
+     "translations": {
+       "en-US": {
+         "key1": "value1",
+         "key2": "value2"
+       },
+       "lt-LT": {
+         "key1": "vertimas1",
+         "key2": "vertimas2"
+       }
+     }
+   }
+   ```
+
+3. **Translation key structure:**
+   - `nav.*` - Navigation items
+   - `home.*` - Home page content
+   - `about.*` - About page content
+   - `products.*` - Products page content
+   - `product.*` - Product detail content
+   - `page.*` - Generic CMS page content
+
+#### Sample Translations
+
+See `docs/translations-sample.json` for the complete translation structure expected by the frontend.
+
 ### CORS Configuration
 
 The backend is already configured to allow requests from:

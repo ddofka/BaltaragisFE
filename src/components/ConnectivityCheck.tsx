@@ -70,6 +70,12 @@ function ConnectivityCheck() {
               <p>
                 Base URL: {(import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8080/api/v1'}
               </p>
+              <p>
+                Environment: {process.env.NODE_ENV}
+              </p>
+              <p>
+                VITE_API_BASE_URL: {(import.meta as any).env?.VITE_API_BASE_URL || 'NOT SET'}
+              </p>
             </>
           )}
         </div>
