@@ -9,7 +9,19 @@ interface LayoutProps {
 
 function Layout({ children }: LayoutProps) {
   const location = useLocation()
-  const { t } = useI18n()
+  const { t, isInitializing } = useI18n()
+
+  // Show loading state while locale is being determined
+  if (isInitializing) {
+    return (
+      <div className="app">
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   const isActive = (path: string) => {
     if (path === '/') {

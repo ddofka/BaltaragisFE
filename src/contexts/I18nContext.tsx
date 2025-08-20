@@ -23,6 +23,7 @@ interface I18nContextType {
   setLocale: (locale: SupportedLocale) => void
   t: (key: string) => string
   isLoading: boolean
+  isInitializing: boolean
   error: string | null
 }
 
@@ -38,6 +39,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
   const [locale, setLocaleState] = useState<SupportedLocale>('en-US')
   const [translations, setTranslations] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(true)
+  const [isInitializing, setIsInitializing] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   // Determine initial locale on app boot
@@ -48,6 +50,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
         const savedLocale = localStorage.getItem('baltaragis-locale') as SupportedLocale
         if (savedLocale && SUPPORTED_LOCALES.includes(savedLocale)) {
           setLocaleState(savedLocale)
+          setIsInitializing(false)
           return
         }
 
@@ -55,7 +58,11 @@ export function I18nProvider({ children }: I18nProviderProps) {
         try {
           const backendLocale = await apiClient.getCurrentLocale()
           if (SUPPORTED_LOCALES.includes(backendLocale as SupportedLocale)) {
-            setLocaleState(backendLocale as SupportedLocale)
+            const finalLocale = backendLocale as SupportedLocale
+            setLocaleState(finalLocale)
+            // Persist the backend-detected locale
+            localStorage.setItem('baltaragis-locale', finalLocale)
+            setIsInitializing(false)
             return
           }
         } catch (error) {
@@ -64,14 +71,21 @@ export function I18nProvider({ children }: I18nProviderProps) {
 
         // Priority 3: Accept-Language header
         const acceptLanguage = navigator.language
+        let detectedLocale: SupportedLocale = 'en-US' // Default fallback
+        
         if (acceptLanguage.startsWith('lt')) {
-          setLocaleState('lt-LT')
-        } else {
-          setLocaleState('en-US') // Default fallback
+          detectedLocale = 'lt-LT'
         }
+        
+        setLocaleState(detectedLocale)
+        // Persist the Accept-Language detected locale
+        localStorage.setItem('baltaragis-locale', detectedLocale)
+        setIsInitializing(false)
       } catch (error) {
         console.error('Error determining initial locale:', error)
         setLocaleState('en-US') // Final fallback
+        localStorage.setItem('baltaragis-locale', 'en-US')
+        setIsInitializing(false)
       }
     }
 
@@ -140,6 +154,7 @@ export function I18nProvider({ children }: I18nProviderProps) {
     setLocale,
     t,
     isLoading,
+    isInitializing,
     error
   }
 
