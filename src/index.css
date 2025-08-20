@@ -363,6 +363,40 @@ body {
   color: #e74c3c;
 }
 
+/* Language switcher */
+.language-switcher {
+  display: flex;
+  align-items: center;
+}
+
+.language-options {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.language-option {
+  background: transparent;
+  border: 1px solid #e1e5e9;
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #666;
+}
+
+.language-option:hover {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.language-option.active {
+  background: #3498db;
+  border-color: #3498db;
+  color: white;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .nav {
@@ -389,6 +423,10 @@ body {
   
   .page h1 {
     font-size: 2rem;
+  }
+  
+  .language-switcher {
+    margin-top: 1rem;
   }
 }
 
