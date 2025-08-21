@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useI18n } from '../contexts/I18nContext'
 import { useEffect, useState, useMemo, useRef, useCallback } from 'react'
 import { apiClient, ApiError } from '../api/generated/client'
-import LoadingSpinner from '../components/LoadingSpinner'
+import LoadingSkeleton from '../components/LoadingSkeleton'
 import { useSeoMeta } from '../hooks/useSeoMeta'
 
 const FALLBACK_IMAGE = '/share-fallback.jpg'
@@ -141,10 +141,7 @@ function ProductDetail() {
   if (loading) {
     return (
       <div className="page product-detail-page">
-        <div className="loading-container">
-          <LoadingSpinner />
-          <p>{t('common.loading')}</p>
-        </div>
+        <LoadingSkeleton type="detail" />
       </div>
     )
   }
@@ -152,9 +149,19 @@ function ProductDetail() {
   if (notFound) {
     return (
       <div className="page product-detail-page">
-        <h1>{t('product.not_found_title')}</h1>
-        <p>{t('product.not_found_message')}</p>
-        <button className="btn btn-primary" onClick={() => navigate('/products')}>{t('product.back_to_products')}</button>
+        <div className="error-state">
+          <div className="error-icon" aria-hidden="true">🎨</div>
+          <h1>{t('product.not_found_title')}</h1>
+          <p>{t('product.not_found_message')}</p>
+          <div className="error-actions">
+            <button className="btn btn-primary" onClick={() => navigate('/products')}>
+              {t('product.back_to_products')}
+            </button>
+            <button className="btn btn-secondary" onClick={() => navigate('/')}>
+              {t('common.go_home')}
+            </button>
+          </div>
+        </div>
       </div>
     )
   }
@@ -162,11 +169,22 @@ function ProductDetail() {
   if (error) {
     return (
       <div className="page product-detail-page">
-        <h1>{t('product.error_loading')}</h1>
-        <p>{t('product.error_message')}</p>
-        <div className="error-details">{error}</div>
-        <button className="btn btn-primary" onClick={() => window.location.reload()}>{t('common.retry')}</button>
-        <button className="btn btn-secondary" onClick={() => navigate('/products')}>{t('product.back_to_products')}</button>
+        <div className="error-state">
+          <div className="error-icon" aria-hidden="true">⚠️</div>
+          <h1>{t('product.error_loading')}</h1>
+          <p>{t('product.error_message')}</p>
+          {process.env.NODE_ENV === 'development' && (
+            <div className="error-details">{error}</div>
+          )}
+          <div className="error-actions">
+            <button className="btn btn-primary" onClick={() => window.location.reload()}>
+              {t('common.retry')}
+            </button>
+            <button className="btn btn-secondary" onClick={() => navigate('/products')}>
+              {t('product.back_to_products')}
+            </button>
+          </div>
+        </div>
       </div>
     )
   }

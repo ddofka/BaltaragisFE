@@ -5,6 +5,7 @@ import About from './pages/About.tsx'
 import Products from './pages/Products.tsx'
 import ProductDetail from './pages/ProductDetail.tsx'
 import GenericPage from './pages/GenericPage.tsx'
+import NotFound from './pages/NotFound.tsx'
 import ConnectivityCheck from './components/ConnectivityCheck.tsx'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/products/:slug" element={<ProductDetail />} />
         <Route path="/pages/:slug" element={<GenericPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
   )

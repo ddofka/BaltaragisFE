@@ -7,7 +7,7 @@ import { PageProductCard } from '../api/generated/types'
 import ProductCardComponent from '../components/ProductCard'
 import SearchInput from '../components/SearchInput'
 import Pagination from '../components/Pagination'
-import LoadingSpinner from '../components/LoadingSpinner'
+import LoadingSkeleton from '../components/LoadingSkeleton'
 
 function Products() {
   const { t } = useI18n()
@@ -99,10 +99,11 @@ function Products() {
   if (loading && !products) {
     return (
       <div className="page products-page">
-        <div className="loading-container">
-          <LoadingSpinner />
-          <p>{t('common.loading')}</p>
-        </div>
+        <header className="products-header">
+          <h1>{t('products.title')}</h1>
+          <p className="products-intro">{t('products.intro')}</p>
+        </header>
+        <LoadingSkeleton type="grid" count={12} />
       </div>
     )
   }
@@ -141,17 +142,22 @@ function Products() {
         />
         
         <div className="empty-state">
-          <div className="empty-icon">🎨</div>
+          <div className="empty-icon" aria-hidden="true">🎨</div>
           <h2>{t('products.no_results_title')}</h2>
           <p>{t('products.no_results_message')}</p>
-          {query && (
-            <button 
-              onClick={() => handleSearch('')}
-              className="btn btn-secondary"
-            >
-              {t('products.clear_search')}
+          <div className="empty-actions">
+            {query && (
+              <button 
+                onClick={() => handleSearch('')}
+                className="btn btn-primary"
+              >
+                {t('products.clear_search')}
+              </button>
+            )}
+            <button onClick={() => navigate('/')} className="btn btn-secondary">
+              {t('common.go_home')}
             </button>
-          )}
+          </div>
         </div>
       </div>
     )
