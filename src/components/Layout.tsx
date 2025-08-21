@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { ReactNode } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
 import { useI18n } from '../contexts/I18nContext'
+import { useConsent } from '../contexts/ConsentContext'
 
 interface LayoutProps {
   children: ReactNode
@@ -10,6 +11,7 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   const location = useLocation()
   const { t, isInitializing } = useI18n()
+  const { reopenBanner } = useConsent()
 
   // Show loading state while locale is being determined
   if (isInitializing) {
@@ -62,7 +64,18 @@ function Layout({ children }: LayoutProps) {
         {children}
       </main>
       <footer className="footer" role="contentinfo">
-        <p>&copy; 2025 Baltaragis. All rights reserved.</p>
+        <div className="footer-content">
+          <p>&copy; 2025 Baltaragis. All rights reserved.</p>
+          <div className="footer-links">
+            <button 
+              onClick={reopenBanner}
+              className="footer-link footer-consent-link"
+              aria-label={t('cookies.manage_preferences')}
+            >
+              {t('cookies.manage_cookies')}
+            </button>
+          </div>
+        </div>
       </footer>
     </div>
   )
