@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap reference - API sitemap is the source of truth for dynamic URLs
+Sitemap: https://www.baltaragis.com/sitemap.xml
