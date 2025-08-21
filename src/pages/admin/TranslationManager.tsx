@@ -27,6 +27,7 @@ function TranslationManager() {
   const fetchAllTranslations = async () => {
     try {
       setLoading(true)
+      setError(null)
       const results = await Promise.allSettled(
         LOCALES.map(locale => apiClient.getTranslationsByLocale(locale.code))
       )
@@ -50,8 +51,38 @@ function TranslationManager() {
 
       setTranslations(translationMap)
     } catch (err) {
-      setError('Failed to load translations')
       console.error('Error fetching translations:', err)
+      
+      // Mock translation data for development
+      const mockTranslations: Record<string, Record<SupportedLocale, TranslationResponse | null>> = {
+        'home.welcome': {
+          'en-US': { id: 1, key: 'home.welcome', locale: 'en-US', value: 'Welcome to Baltaragis Art Gallery', updatedAt: '2024-01-01T00:00:00Z' },
+          'lt-LT': { id: 2, key: 'home.welcome', locale: 'lt-LT', value: 'Sveiki atvykę į Baltaragio meno galeriją', updatedAt: '2024-01-01T00:00:00Z' }
+        },
+        'home.subtitle': {
+          'en-US': { id: 3, key: 'home.subtitle', locale: 'en-US', value: 'Discover contemporary art prints and original works', updatedAt: '2024-01-01T00:00:00Z' },
+          'lt-LT': { id: 4, key: 'home.subtitle', locale: 'lt-LT', value: 'Atraskite šiuolaikinio meno spaudos darbus ir originalius kūrinius', updatedAt: '2024-01-01T00:00:00Z' }
+        },
+        'nav.home': {
+          'en-US': { id: 5, key: 'nav.home', locale: 'en-US', value: 'Home', updatedAt: '2024-01-01T00:00:00Z' },
+          'lt-LT': { id: 6, key: 'nav.home', locale: 'lt-LT', value: 'Pradžia', updatedAt: '2024-01-01T00:00:00Z' }
+        },
+        'nav.products': {
+          'en-US': { id: 7, key: 'nav.products', locale: 'en-US', value: 'Artwork', updatedAt: '2024-01-01T00:00:00Z' },
+          'lt-LT': { id: 8, key: 'nav.products', locale: 'lt-LT', value: 'Meno kūriniai', updatedAt: '2024-01-01T00:00:00Z' }
+        },
+        'nav.about': {
+          'en-US': { id: 9, key: 'nav.about', locale: 'en-US', value: 'About', updatedAt: '2024-01-01T00:00:00Z' },
+          'lt-LT': { id: 10, key: 'nav.about', locale: 'lt-LT', value: 'Apie', updatedAt: '2024-01-01T00:00:00Z' }
+        },
+        'cart.title': {
+          'en-US': { id: 11, key: 'cart.title', locale: 'en-US', value: 'Shopping Cart', updatedAt: '2024-01-01T00:00:00Z' },
+          'lt-LT': { id: 12, key: 'cart.title', locale: 'lt-LT', value: 'Pirkimų krepšelis', updatedAt: '2024-01-01T00:00:00Z' }
+        }
+      }
+      
+      setTranslations(mockTranslations)
+      setError('Using development translation data. API connection failed.')
     } finally {
       setLoading(false)
     }
@@ -185,50 +216,143 @@ function TranslationManager() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
-          {error}
+        <div style={{
+          backgroundColor: '#fef3c7',
+          border: '1px solid #fbbf24',
+          color: '#92400e',
+          padding: '12px 16px',
+          borderRadius: '8px',
+          marginBottom: '24px',
+          fontSize: '14px'
+        }}>
+          ⚠️ {error}
         </div>
       )}
 
       {/* Controls */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
-          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
-            <div className="flex space-x-2">
-              <input
-                type="text"
-                value={newKey}
-                onChange={(e) => setNewKey(e.target.value)}
-                placeholder="new.translation.key"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onKeyPress={(e) => e.key === 'Enter' && addNewKey()}
-              />
-              <button
-                onClick={addNewKey}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Add Key
-              </button>
-            </div>
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+        border: '1px solid #e5e7eb',
+        padding: '24px',
+        marginBottom: '24px'
+      }}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px'
+        }}>
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '12px'
+          }}>
+            <input
+              type="text"
+              value={newKey}
+              onChange={(e) => setNewKey(e.target.value)}
+              placeholder="new.translation.key"
+              style={{
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                width: '200px',
+                outline: 'none'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#2563eb'
+                e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db'
+                e.target.style.boxShadow = 'none'
+              }}
+              onKeyPress={(e) => e.key === 'Enter' && addNewKey()}
+            />
+            <button
+              onClick={addNewKey}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#2563eb',
+                color: 'white',
+                borderRadius: '6px',
+                border: 'none',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#1d4ed8'}
+              onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#2563eb'}
+            >
+              Add Key
+            </button>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+          <div style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
             <input
               type="text"
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
               placeholder="Filter translations..."
-              className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              style={{
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                width: '200px',
+                outline: 'none'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#2563eb'
+                e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db'
+                e.target.style.boxShadow = 'none'
+              }}
             />
             <button
               onClick={exportTranslations}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#059669',
+                color: 'white',
+                borderRadius: '6px',
+                border: 'none',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#047857'}
+              onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#059669'}
             >
               Export
             </button>
             <button
               onClick={() => setShowBulkImport(!showBulkImport)}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#9333ea',
+                color: 'white',
+                borderRadius: '6px',
+                border: 'none',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#7c3aed'}
+              onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#9333ea'}
             >
               Import
             </button>
@@ -237,8 +361,19 @@ function TranslationManager() {
 
         {/* Bulk Import */}
         {showBulkImport && (
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <h3 className="text-lg font-medium text-gray-900 mb-3">Bulk Import</h3>
+          <div style={{
+            marginTop: '24px',
+            paddingTop: '24px',
+            borderTop: '1px solid #e5e7eb'
+          }}>
+            <h3 style={{
+              fontSize: '18px',
+              fontWeight: '500',
+              color: '#111827',
+              marginBottom: '12px'
+            }}>
+              Bulk Import
+            </h3>
             <textarea
               value={bulkImport}
               onChange={(e) => setBulkImport(e.target.value)}
@@ -253,18 +388,64 @@ function TranslationManager() {
   }
 }`}
               rows={8}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+              style={{
+                width: '100%',
+                padding: '12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontFamily: 'monospace',
+                fontSize: '14px',
+                outline: 'none',
+                resize: 'vertical'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#2563eb'
+                e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db'
+                e.target.style.boxShadow = 'none'
+              }}
             />
-            <div className="flex justify-end space-x-2 mt-3">
+            <div style={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+              gap: '8px',
+              marginTop: '12px'
+            }}>
               <button
                 onClick={() => setShowBulkImport(false)}
-                className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                style={{
+                  padding: '8px 16px',
+                  color: '#374151',
+                  backgroundColor: '#f3f4f6',
+                  borderRadius: '6px',
+                  border: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#e5e7eb'}
+                onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#f3f4f6'}
               >
                 Cancel
               </button>
               <button
                 onClick={handleBulkImport}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#9333ea',
+                  color: 'white',
+                  borderRadius: '6px',
+                  border: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+                onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#7c3aed'}
+                onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = '#9333ea'}
               >
                 Import
               </button>
@@ -274,35 +455,95 @@ function TranslationManager() {
       </div>
 
       {/* Translation Table */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+        border: '1px solid #e5e7eb',
+        overflow: 'hidden'
+      }}>
         {filteredKeys.length === 0 ? (
-          <div className="text-center py-12">
-            <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ textAlign: 'center', padding: '48px 0' }}>
+            <svg style={{ 
+              width: '48px', 
+              height: '48px', 
+              color: '#9ca3af', 
+              margin: '0 auto 16px auto' 
+            }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
             </svg>
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No translations found</h3>
-            <p className="mt-1 text-sm text-gray-500">Add translation keys to get started.</p>
+            <h3 style={{ 
+              margin: '8px 0 4px 0', 
+              fontSize: '14px', 
+              fontWeight: '500', 
+              color: '#111827' 
+            }}>
+              No translations found
+            </h3>
+            <p style={{ 
+              margin: '4px 0 0 0', 
+              fontSize: '14px', 
+              color: '#6b7280' 
+            }}>
+              Add translation keys to get started.
+            </p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ 
+              width: '100%', 
+              borderCollapse: 'collapse' 
+            }}>
+              <thead style={{ backgroundColor: '#f9fafb' }}>
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th style={{
+                    padding: '12px 24px',
+                    textAlign: 'left',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    borderBottom: '1px solid #e5e7eb'
+                  }}>
                     Translation Key
                   </th>
                   {LOCALES.map(locale => (
-                    <th key={locale.code} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th key={locale.code} style={{
+                      padding: '12px 24px',
+                      textAlign: 'left',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      color: '#6b7280',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                      borderBottom: '1px solid #e5e7eb'
+                    }}>
                       {locale.flag} {locale.name}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {filteredKeys.map(key => (
-                  <tr key={key} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900 font-mono">{key}</div>
+              <tbody style={{ backgroundColor: 'white' }}>
+                {filteredKeys.map((key, index) => (
+                  <tr 
+                    key={key} 
+                    style={{
+                      borderBottom: index < filteredKeys.length - 1 ? '1px solid #e5e7eb' : 'none',
+                      transition: 'background-color 0.2s'
+                    }}
+                    onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#f9fafb'}
+                    onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'transparent'}
+                  >
+                    <td style={{ padding: '16px 24px', whiteSpace: 'nowrap' }}>
+                      <div style={{ 
+                        fontSize: '14px', 
+                        fontWeight: '500', 
+                        color: '#111827',
+                        fontFamily: 'monospace'
+                      }}>
+                        {key}
+                      </div>
                     </td>
                     {LOCALES.map(locale => {
                       const translation = translations[key][locale.code]
@@ -310,8 +551,8 @@ function TranslationManager() {
                       const isSaving = saving === saveKey
 
                       return (
-                        <td key={locale.code} className="px-6 py-4">
-                          <div className="flex items-center space-x-2">
+                        <td key={locale.code} style={{ padding: '16px 24px' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <textarea
                               value={translation?.value || ''}
                               onChange={(e) => {
@@ -320,20 +561,53 @@ function TranslationManager() {
                                   updateTranslation(key, locale.code, value)
                                 }
                               }}
-                              className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                              style={{
+                                flex: 1,
+                                padding: '8px 12px',
+                                fontSize: '14px',
+                                border: '1px solid #d1d5db',
+                                borderRadius: '6px',
+                                resize: 'none',
+                                outline: 'none'
+                              }}
+                              onFocus={(e) => {
+                                e.target.style.borderColor = '#2563eb'
+                                e.target.style.boxShadow = '0 0 0 1px #2563eb'
+                              }}
+                              onBlur={(e) => {
+                                e.target.style.borderColor = '#d1d5db'
+                                e.target.style.boxShadow = 'none'
+                              }}
                               rows={2}
                               placeholder={`Enter ${locale.name} translation...`}
                             />
                             {isSaving && (
-                              <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
+                              <div style={{
+                                width: '16px',
+                                height: '16px',
+                                border: '2px solid #2563eb',
+                                borderTop: '2px solid transparent',
+                                borderRadius: '50%',
+                                animation: 'spin 1s linear infinite'
+                              }} />
                             )}
                             {translation && (
                               <button
                                 onClick={() => deleteTranslation(key, locale.code)}
-                                className="p-1 text-red-400 hover:text-red-600 transition-colors"
+                                style={{
+                                  padding: '4px',
+                                  color: '#f87171',
+                                  background: 'none',
+                                  border: 'none',
+                                  cursor: 'pointer',
+                                  borderRadius: '4px',
+                                  transition: 'color 0.2s'
+                                }}
                                 title="Delete translation"
+                                onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#dc2626'}
+                                onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#f87171'}
                               >
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                 </svg>
                               </button>

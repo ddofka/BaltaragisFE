@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import ErrorBoundary from './components/ErrorBoundary.tsx'
 import { I18nProvider } from './contexts/I18nContext.tsx'
+import { CartProvider } from './contexts/CartContext.tsx'
 import { initPerformanceMonitoring } from './utils/performance.ts'
 import './index.css'
 
@@ -14,9 +15,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ErrorBoundary>
       <I18nProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <CartProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </CartProvider>
       </I18nProvider>
     </ErrorBoundary>
   </React.StrictMode>,

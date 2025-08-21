@@ -17,11 +17,47 @@ function PageList() {
   const fetchPages = async () => {
     try {
       setLoading(true)
+      setError(null)
       const data = await apiClient.getAllPagesAdmin()
       setPages(data)
     } catch (err) {
-      setError('Failed to load pages')
       console.error('Error fetching pages:', err)
+      
+      // Provide helpful error message and mock data for development
+      setError('Using development page data. API connection failed.')
+      
+      // Mock data for development when API is not available
+      const mockPages: Page[] = [
+        {
+          id: 1,
+          title: "About the Artist",
+          slug: "about-artist",
+          contentMd: "# About the Artist\n\nExplore the journey and artistic vision behind the contemporary works...",
+          isPublished: true,
+          createdAt: "2024-01-10T10:00:00Z",
+          updatedAt: "2024-01-15T14:30:00Z"
+        },
+        {
+          id: 2,
+          title: "Gallery Information",
+          slug: "gallery-info",
+          contentMd: "# Gallery Information\n\nVisiting hours, location details, and exhibition schedules...",
+          isPublished: true,
+          createdAt: "2024-01-08T09:00:00Z",
+          updatedAt: "2024-01-12T16:45:00Z"
+        },
+        {
+          id: 3,
+          title: "Commission Guidelines",
+          slug: "commissions",
+          contentMd: "# Commission Guidelines\n\nCustom artwork process, pricing, and requirements for commissioned pieces...",
+          isPublished: false,
+          createdAt: "2024-01-05T11:00:00Z",
+          updatedAt: "2024-01-05T11:00:00Z"
+        }
+      ]
+      
+      setPages(mockPages)
     } finally {
       setLoading(false)
     }
@@ -127,81 +163,205 @@ function PageList() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6">
-          {error}
+        <div style={{
+          backgroundColor: '#fef3c7',
+          border: '1px solid #fbbf24',
+          color: '#92400e',
+          padding: '12px 16px',
+          borderRadius: '8px',
+          marginBottom: '24px',
+          fontSize: '14px'
+        }}>
+          ⚠️ {error}
         </div>
       )}
 
       {pages.length === 0 ? (
-        <div className="text-center py-12">
-          <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{ textAlign: 'center', padding: '48px 0' }}>
+          <svg style={{ 
+            width: '48px', 
+            height: '48px', 
+            color: '#9ca3af', 
+            margin: '0 auto 16px auto' 
+          }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No pages</h3>
-          <p className="mt-1 text-sm text-gray-500">Get started by creating your first page.</p>
-          <div className="mt-6">
-            <Link
-              to="/admin/pages/new"
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-              Add Page
-            </Link>
-          </div>
+          <h3 style={{ 
+            margin: '8px 0 4px 0', 
+            fontSize: '14px', 
+            fontWeight: '500', 
+            color: '#111827' 
+          }}>
+            No pages
+          </h3>
+          <p style={{ 
+            margin: '4px 0 24px 0', 
+            fontSize: '14px', 
+            color: '#6b7280' 
+          }}>
+            Get started by creating your first page.
+          </p>
+          <Link
+            to="/admin/pages/new"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '8px 16px',
+              backgroundColor: '#2563eb',
+              color: 'white',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#1d4ed8'}
+            onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#2563eb'}
+          >
+            <svg style={{ width: '16px', height: '16px', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            Add Page
+          </Link>
         </div>
       ) : (
-        <div className="bg-white shadow-sm rounded-lg overflow-hidden">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+        <div style={{
+          backgroundColor: 'white',
+          boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+          borderRadius: '8px',
+          overflow: 'hidden',
+          border: '1px solid #e5e7eb'
+        }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '24px',
+            padding: '24px'
+          }}>
             {pages.map((page) => (
-              <div key={page.id} className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-1">{page.title}</h3>
-                    <p className="text-sm text-gray-500 font-mono">/{page.slug}</p>
+              <div 
+                key={page.id} 
+                style={{
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  padding: '24px',
+                  backgroundColor: 'white',
+                  transition: 'box-shadow 0.2s',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)'
+                }}
+                onMouseEnter={(e) => (e.target as HTMLElement).style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)'}
+                onMouseLeave={(e) => (e.target as HTMLElement).style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)'}
+              >
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'flex-start', 
+                  marginBottom: '16px' 
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{ 
+                      fontSize: '18px', 
+                      fontWeight: '600', 
+                      color: '#111827', 
+                      margin: '0 0 4px 0' 
+                    }}>
+                      {page.title}
+                    </h3>
+                    <p style={{ 
+                      fontSize: '14px', 
+                      color: '#6b7280', 
+                      fontFamily: 'monospace',
+                      margin: 0
+                    }}>
+                      /{page.slug}
+                    </p>
                   </div>
                   <button
                     onClick={() => togglePublish(page)}
-                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      page.isPublished
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-gray-100 text-gray-800'
-                    }`}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '2px 10px',
+                      borderRadius: '9999px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      border: 'none',
+                      cursor: 'pointer',
+                      backgroundColor: page.isPublished ? '#dcfce7' : '#f3f4f6',
+                      color: page.isPublished ? '#166534' : '#374151',
+                      transition: 'all 0.2s'
+                    }}
                   >
                     {page.isPublished ? 'Published' : 'Draft'}
                   </button>
                 </div>
 
-                <div className="mb-4">
-                  <p className="text-sm text-gray-600 line-clamp-3">
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{ 
+                    fontSize: '14px', 
+                    color: '#4b5563', 
+                    lineHeight: '1.5',
+                    margin: 0,
+                    overflow: 'hidden',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical'
+                  }}>
                     {truncateContent(page.contentMd.replace(/[#*`]/g, ''), 120)}
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between', 
+                  fontSize: '12px', 
+                  color: '#6b7280', 
+                  marginBottom: '16px' 
+                }}>
                   <span>Updated {formatDate(page.updatedAt)}</span>
                   <span>Created {formatDate(page.createdAt)}</span>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'space-between' 
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Link
                       to={`/pages/${page.slug}`}
-                      className="text-blue-600 hover:text-blue-900 transition-colors"
+                      style={{
+                        color: '#2563eb',
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '4px'
+                      }}
                       title="View page"
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#1d4ed8'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#2563eb'}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
                     </Link>
                     <Link
                       to={`/admin/pages/${page.id}/edit`}
-                      className="text-gray-600 hover:text-gray-900 transition-colors"
+                      style={{
+                        color: '#6b7280',
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '4px'
+                      }}
                       title="Edit page"
+                      onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#111827'}
+                      onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#6b7280'}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                       </svg>
                     </Link>
@@ -210,13 +370,36 @@ function PageList() {
                   <button
                     onClick={() => handleDelete(page.id, page.title)}
                     disabled={deleteLoading === page.id}
-                    className="text-red-600 hover:text-red-900 transition-colors disabled:opacity-50"
+                    style={{
+                      color: '#dc2626',
+                      background: 'none',
+                      border: 'none',
+                      cursor: deleteLoading === page.id ? 'not-allowed' : 'pointer',
+                      opacity: deleteLoading === page.id ? 0.5 : 1,
+                      transition: 'color 0.2s',
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '4px'
+                    }}
                     title="Delete page"
+                    onMouseEnter={(e) => {
+                      if (!deleteLoading) {
+                        (e.target as HTMLElement).style.color = '#991b1b'
+                      }
+                    }}
+                    onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#dc2626'}
                   >
                     {deleteLoading === page.id ? (
-                      <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                      <div style={{
+                        width: '16px',
+                        height: '16px',
+                        border: '2px solid #dc2626',
+                        borderTop: '2px solid transparent',
+                        borderRadius: '50%',
+                        animation: 'spin 1s linear infinite'
+                      }} />
                     ) : (
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg style={{ width: '16px', height: '16px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                     )}

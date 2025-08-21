@@ -12,6 +12,9 @@ const About = lazy(() => import('./pages/About'))
 const Products = lazy(() => import('./pages/Products'))
 const ProductDetail = lazy(() => import('./pages/ProductDetail'))
 const GenericPage = lazy(() => import('./pages/GenericPage'))
+const Checkout = lazy(() => import('./pages/Checkout'))
+const CheckoutSuccess = lazy(() => import('./pages/CheckoutSuccess'))
+const CheckoutCancel = lazy(() => import('./pages/CheckoutCancel'))
 
 // Admin components
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
@@ -163,6 +166,30 @@ function App() {
                 element={
                   <Suspense fallback={<LoadingSpinner />}>
                     <ProductDetail />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/checkout" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Checkout />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/checkout/success" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <CheckoutSuccess />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/checkout/cancel" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <CheckoutCancel />
                   </Suspense>
                 } 
               />

@@ -8,7 +8,11 @@ function AdminDashboard() {
     publishedProducts: 0,
     totalPages: 0,
     publishedPages: 0,
-    totalTranslations: 0
+    totalTranslations: 0,
+    itemsSold: 0,
+    waitingListItems: 0,
+    abandonedCarts: 0,
+    abandonedCartProduct: ''
   })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -25,7 +29,11 @@ function AdminDashboard() {
           publishedProducts: 8,
           totalPages: 5,
           publishedPages: 4,
-          totalTranslations: 45
+          totalTranslations: 45,
+          itemsSold: 23,
+          waitingListItems: 17,
+          abandonedCarts: 5,
+          abandonedCartProduct: 'Abstract Canvas Print'
         })
         
         // Uncomment this when backend is running:
@@ -107,6 +115,7 @@ function AdminDashboard() {
         gap: '24px', 
         marginBottom: '32px' 
       }}>
+        {/* Products */}
         <div style={{ 
           backgroundColor: 'white', 
           borderRadius: '8px', 
@@ -132,13 +141,16 @@ function AdminDashboard() {
             <div style={{ marginLeft: '16px' }}>
               <p style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', margin: '0 0 4px 0' }}>Products</p>
               <p style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
-                {stats.publishedProducts}/{stats.totalProducts}
+                {stats.publishedProducts}
               </p>
-              <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>Published/Total</p>
+              <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>
+                Published • {stats.totalProducts - stats.publishedProducts} draft
+              </p>
             </div>
           </div>
         </div>
 
+        {/* Pages */}
         <div style={{ 
           backgroundColor: 'white', 
           borderRadius: '8px', 
@@ -164,13 +176,120 @@ function AdminDashboard() {
             <div style={{ marginLeft: '16px' }}>
               <p style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', margin: '0 0 4px 0' }}>Pages</p>
               <p style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
-                {stats.publishedPages}/{stats.totalPages}
+                {stats.publishedPages}
               </p>
-              <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>Published/Total</p>
+              <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>
+                Published • {stats.totalPages - stats.publishedPages} draft
+              </p>
             </div>
           </div>
         </div>
 
+        {/* Items Sold */}
+        <div style={{ 
+          backgroundColor: 'white', 
+          borderRadius: '8px', 
+          border: '1px solid #e5e7eb', 
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', 
+          padding: '24px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ 
+              width: '48px', 
+              height: '48px', 
+              backgroundColor: '#ecfccb', 
+              borderRadius: '8px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <svg style={{ width: '24px', height: '24px', color: '#65a30d' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div style={{ marginLeft: '16px' }}>
+              <p style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', margin: '0 0 4px 0' }}>Items Sold</p>
+              <p style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+                {stats.itemsSold}
+              </p>
+              <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>Total sales</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Waiting List Items */}
+        <div style={{ 
+          backgroundColor: 'white', 
+          borderRadius: '8px', 
+          border: '1px solid #e5e7eb', 
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', 
+          padding: '24px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ 
+              width: '48px', 
+              height: '48px', 
+              backgroundColor: '#fce7f3', 
+              borderRadius: '8px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <svg style={{ width: '24px', height: '24px', color: '#ec4899' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM4 19h6v-6H4v6zM4 5h6V4a1 1 0 00-1-1H5a1 1 0 00-1 1v1zm0 6h6V9H4v2zm0 4h6v-2H4v2z" />
+              </svg>
+            </div>
+            <div style={{ marginLeft: '16px' }}>
+              <p style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', margin: '0 0 4px 0' }}>Waiting List</p>
+              <p style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+                {stats.waitingListItems}
+              </p>
+              <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>Products • Notify when available</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Abandoned Carts */}
+        <div style={{ 
+          backgroundColor: 'white', 
+          borderRadius: '8px', 
+          border: '1px solid #e5e7eb', 
+          boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)', 
+          padding: '24px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ 
+              width: '48px', 
+              height: '48px', 
+              backgroundColor: '#fef3c7', 
+              borderRadius: '8px', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <svg style={{ width: '24px', height: '24px', color: '#d97706' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m2.6 8L6 5H4m4 8v6a1 1 0 001 1h10a1 1 0 001-1v-6M9 19a1 1 0 11-2 0 1 1 0 012 0zm10 0a1 1 0 11-2 0 1 1 0 012 0z" />
+              </svg>
+            </div>
+            <div style={{ marginLeft: '16px' }}>
+              <p style={{ fontSize: '14px', fontWeight: '500', color: '#6b7280', margin: '0 0 4px 0' }}>Abandoned Carts</p>
+              <p style={{ fontSize: '24px', fontWeight: '600', color: '#111827', margin: '0 0 4px 0' }}>
+                {stats.abandonedCarts}
+              </p>
+              <p style={{ fontSize: '12px', color: '#9ca3af', margin: '0 0 4px 0' }}>Incomplete purchases</p>
+              {stats.abandonedCartProduct && (
+                <p style={{ fontSize: '11px', color: '#f59e0b', margin: 0, fontStyle: 'italic' }}>
+                  Most popular: {stats.abandonedCartProduct}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Translations */}
         <div style={{ 
           backgroundColor: 'white', 
           borderRadius: '8px', 

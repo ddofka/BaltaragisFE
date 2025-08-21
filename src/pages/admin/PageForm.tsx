@@ -152,17 +152,34 @@ function PageForm({ mode }: PageFormProps) {
         </p>
       </div>
 
-      <div className="max-w-6xl">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <div style={{ maxWidth: '1200px' }}>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg">
+            <div style={{
+              backgroundColor: '#fef2f2',
+              border: '1px solid #fecaca',
+              color: '#dc2626',
+              padding: '12px 16px',
+              borderRadius: '8px',
+              fontSize: '14px'
+            }}>
               {error}
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '24px'
+          }}>
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="title" style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 Page Title *
               </label>
               <input
@@ -170,14 +187,36 @@ function PageForm({ mode }: PageFormProps) {
                 id="title"
                 value={formData.title}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#2563eb'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = 'none'
+                }}
                 placeholder="Enter page title"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="slug" style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 URL Slug *
               </label>
               <input
@@ -185,40 +224,113 @@ function PageForm({ mode }: PageFormProps) {
                 id="slug"
                 value={formData.slug}
                 onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box',
+                  backgroundColor: mode === 'edit' ? '#f9fafb' : 'white',
+                  color: mode === 'edit' ? '#6b7280' : '#111827'
+                }}
+                onFocus={(e) => {
+                  if (mode !== 'edit') {
+                    e.target.style.borderColor = '#2563eb'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+                  }
+                }}
+                onBlur={(e) => {
+                  if (mode !== 'edit') {
+                    e.target.style.borderColor = '#d1d5db'
+                    e.target.style.boxShadow = 'none'
+                  }
+                }}
                 placeholder="page-url-slug"
                 required
-                disabled={mode === 'edit'} // Don't allow editing slug for existing pages
+                disabled={mode === 'edit'}
               />
               {mode === 'edit' && (
-                <p className="text-xs text-gray-500 mt-1">URL slug cannot be changed for existing pages</p>
+                <p style={{
+                  fontSize: '12px',
+                  color: '#6b7280',
+                  marginTop: '4px',
+                  margin: '4px 0 0 0'
+                }}>
+                  URL slug cannot be changed for existing pages
+                </p>
               )}
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <label htmlFor="content" className="block text-sm font-medium text-gray-700">
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '8px'
+            }}>
+              <label htmlFor="content" style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151'
+              }}>
                 Page Content (Markdown)
               </label>
               <button
                 type="button"
                 onClick={() => setPreviewMode(!previewMode)}
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                style={{
+                  fontSize: '14px',
+                  color: '#2563eb',
+                  fontWeight: '500',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s'
+                }}
+                onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#1d4ed8'}
+                onMouseLeave={(e) => (e.target as HTMLElement).style.color = '#2563eb'}
               >
                 {previewMode ? 'Edit' : 'Preview'}
               </button>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
+              gap: '16px'
+            }}>
               {/* Editor */}
-              <div className={previewMode ? 'hidden lg:block' : ''}>
+              <div style={{
+                display: previewMode && window.innerWidth < 1024 ? 'none' : 'block'
+              }}>
                 <textarea
                   id="content"
                   value={formData.contentMd}
                   onChange={(e) => setFormData(prev => ({ ...prev, contentMd: e.target.value }))}
                   rows={20}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-sm"
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    border: '1px solid #d1d5db',
+                    borderRadius: '6px',
+                    fontFamily: 'monospace',
+                    fontSize: '14px',
+                    outline: 'none',
+                    resize: 'vertical',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => {
+                    e.target.style.borderColor = '#2563eb'
+                    e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = '#d1d5db'
+                    e.target.style.boxShadow = 'none'
+                  }}
                   placeholder="# Page Title
 
 Write your page content here using Markdown syntax.
@@ -230,24 +342,51 @@ You can use **bold text**, *italic text*, and [links](https://example.com).
 - List item 1
 - List item 2"
                 />
-                <div className="mt-2 text-xs text-gray-500">
-                  <p>Supported: # Headers, **bold**, *italic*, [links](url), line breaks</p>
+                <div style={{
+                  marginTop: '8px',
+                  fontSize: '12px',
+                  color: '#6b7280'
+                }}>
+                  <p style={{ margin: 0 }}>Supported: # Headers, **bold**, *italic*, [links](url), line breaks</p>
                 </div>
               </div>
 
               {/* Preview */}
-              <div className={!previewMode ? 'hidden lg:block' : ''}>
-                <div className="border border-gray-300 rounded-lg p-4 h-96 lg:h-auto lg:min-h-[500px] overflow-y-auto bg-gray-50">
-                  <div className="bg-white p-6 rounded shadow-sm">
+              <div style={{
+                display: !previewMode && window.innerWidth < 1024 ? 'none' : 'block'
+              }}>
+                <div style={{
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  padding: '16px',
+                  height: '500px',
+                  overflowY: 'auto',
+                  backgroundColor: '#f9fafb'
+                }}>
+                  <div style={{
+                    backgroundColor: 'white',
+                    padding: '24px',
+                    borderRadius: '6px',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+                  }}>
                     {formData.contentMd ? (
                       <div 
-                        className="prose max-w-none"
+                        style={{
+                          maxWidth: 'none',
+                          lineHeight: '1.6'
+                        }}
                         dangerouslySetInnerHTML={{ 
-                          __html: '<p class="mb-4">' + renderMarkdown(formData.contentMd) + '</p>' 
+                          __html: '<p style="margin-bottom: 16px;">' + renderMarkdown(formData.contentMd) + '</p>' 
                         }}
                       />
                     ) : (
-                      <p className="text-gray-500 italic">Content preview will appear here...</p>
+                      <p style={{
+                        color: '#6b7280',
+                        fontStyle: 'italic',
+                        margin: 0
+                      }}>
+                        Content preview will appear here...
+                      </p>
                     )}
                   </div>
                 </div>
@@ -256,35 +395,101 @@ You can use **bold text**, *italic text*, and [links](https://example.com).
           </div>
 
           <div>
-            <label className="flex items-center">
+            <label style={{
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer'
+            }}>
               <input
                 type="checkbox"
                 checked={formData.isPublished}
                 onChange={(e) => setFormData(prev => ({ ...prev, isPublished: e.target.checked }))}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                style={{
+                  marginRight: '8px',
+                  cursor: 'pointer'
+                }}
               />
-              <span className="ml-2 text-sm text-gray-700">Publish page</span>
+              <span style={{
+                fontSize: '14px',
+                color: '#374151'
+              }}>
+                Publish page
+              </span>
             </label>
-            <p className="text-xs text-gray-500 mt-1">
+            <p style={{
+              fontSize: '12px',
+              color: '#6b7280',
+              marginTop: '4px',
+              margin: '4px 0 0 0'
+            }}>
               Published pages will be accessible via /pages/{formData.slug || 'page-slug'}
             </p>
           </div>
 
-          <div className="flex justify-end space-x-4 pt-6 border-t">
+          <div style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: '16px',
+            paddingTop: '24px',
+            borderTop: '1px solid #e5e7eb'
+          }}>
             <button
               type="button"
               onClick={() => navigate('/admin/pages')}
-              className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              style={{
+                padding: '8px 16px',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                backgroundColor: 'white',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => (e.target as HTMLElement).style.backgroundColor = '#f9fafb'}
+              onMouseLeave={(e) => (e.target as HTMLElement).style.backgroundColor = 'white'}
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '8px 16px',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: 'white',
+                backgroundColor: '#2563eb',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: saving ? 'not-allowed' : 'pointer',
+                opacity: saving ? 0.5 : 1,
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => {
+                if (!saving) {
+                  (e.target as HTMLElement).style.backgroundColor = '#1d4ed8'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!saving) {
+                  (e.target as HTMLElement).style.backgroundColor = '#2563eb'
+                }
+              }}
             >
               {saving && (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                <div style={{
+                  width: '16px',
+                  height: '16px',
+                  border: '2px solid white',
+                  borderTop: '2px solid transparent',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite',
+                  marginRight: '8px'
+                }} />
               )}
               {mode === 'create' ? 'Create Page' : 'Save Changes'}
             </button>

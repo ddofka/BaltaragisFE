@@ -243,7 +243,13 @@ function ProductForm({ mode }: ProductFormProps) {
           </div>
 
           <div>
-            <label htmlFor="shortDesc" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="shortDesc" style={{
+              display: 'block',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#374151',
+              marginBottom: '8px'
+            }}>
               Short Description
             </label>
             <input
@@ -251,13 +257,35 @@ function ProductForm({ mode }: ProductFormProps) {
               id="shortDesc"
               value={formData.shortDesc}
               onChange={(e) => setFormData(prev => ({ ...prev, shortDesc: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                boxSizing: 'border-box'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#2563eb'
+                e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db'
+                e.target.style.boxShadow = 'none'
+              }}
               placeholder="Brief product description"
             />
           </div>
 
           <div>
-            <label htmlFor="longDesc" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="longDesc" style={{
+              display: 'block',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#374151',
+              marginBottom: '8px'
+            }}>
               Long Description
             </label>
             <textarea
@@ -265,14 +293,41 @@ function ProductForm({ mode }: ProductFormProps) {
               value={formData.longDesc}
               onChange={(e) => setFormData(prev => ({ ...prev, longDesc: e.target.value }))}
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              style={{
+                width: '100%',
+                padding: '8px 12px',
+                border: '1px solid #d1d5db',
+                borderRadius: '6px',
+                fontSize: '14px',
+                outline: 'none',
+                resize: 'vertical',
+                boxSizing: 'border-box'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#2563eb'
+                e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#d1d5db'
+                e.target.style.boxShadow = 'none'
+              }}
               placeholder="Detailed product description"
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '24px'
+          }}>
             <div>
-              <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="price" style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 Price ({formData.currency}) *
               </label>
               <input
@@ -282,21 +337,59 @@ function ProductForm({ mode }: ProductFormProps) {
                 min="0"
                 value={formatPrice(formData.priceCents)}
                 onChange={(e) => handlePriceChange(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#2563eb'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = 'none'
+                }}
                 placeholder="0.00"
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="currency" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="currency" style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 Currency
               </label>
               <select
                 id="currency"
                 value={formData.currency}
                 onChange={(e) => setFormData(prev => ({ ...prev, currency: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#2563eb'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = 'none'
+                }}
               >
                 <option value="EUR">EUR (€)</option>
                 <option value="USD">USD ($)</option>
@@ -305,7 +398,13 @@ function ProductForm({ mode }: ProductFormProps) {
             </div>
 
             <div>
-              <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="quantity" style={{
+                display: 'block',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#374151',
+                marginBottom: '8px'
+              }}>
                 Stock Quantity *
               </label>
               <input
@@ -314,7 +413,23 @@ function ProductForm({ mode }: ProductFormProps) {
                 min="0"
                 value={formData.quantity}
                 onChange={(e) => setFormData(prev => ({ ...prev, quantity: parseInt(e.target.value) || 0 }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                style={{
+                  width: '100%',
+                  padding: '8px 12px',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = '#2563eb'
+                  e.target.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.1)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = '#d1d5db'
+                  e.target.style.boxShadow = 'none'
+                }}
                 placeholder="0"
                 required
               />
@@ -322,16 +437,33 @@ function ProductForm({ mode }: ProductFormProps) {
           </div>
 
           <div>
-            <label className="flex items-center">
+            <label style={{
+              display: 'flex',
+              alignItems: 'center',
+              cursor: 'pointer'
+            }}>
               <input
                 type="checkbox"
                 checked={formData.isPublished}
                 onChange={(e) => setFormData(prev => ({ ...prev, isPublished: e.target.checked }))}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                style={{
+                  marginRight: '8px',
+                  cursor: 'pointer'
+                }}
               />
-              <span className="ml-2 text-sm text-gray-700">Publish product</span>
+              <span style={{
+                fontSize: '14px',
+                color: '#374151'
+              }}>
+                Publish product
+              </span>
             </label>
-            <p className="text-xs text-gray-500 mt-1">
+            <p style={{
+              fontSize: '12px',
+              color: '#6b7280',
+              marginTop: '4px',
+              margin: '4px 0 0 0'
+            }}>
               Published products will be visible to customers on the website
             </p>
           </div>

@@ -1,6 +1,8 @@
 import { Link, useLocation } from 'react-router-dom'
 import { ReactNode } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
+import CartIcon from './CartIcon'
+import CartDrawer from './CartDrawer'
 import { useI18n } from '../contexts/I18nContext'
 
 interface LayoutProps {
@@ -54,13 +56,18 @@ function Layout({ children }: LayoutProps) {
               </Link>
             </li>
           </ul>
-          <LanguageSwitcher />
+          <div className="nav-actions">
+            <CartIcon />
+            <LanguageSwitcher />
+          </div>
         </nav>
       </header>
 
       <main className="main">
         {children}
       </main>
+      
+      <CartDrawer />
 
       <footer className="footer">
         <p>&copy; 2025 Baltaragis. All rights reserved.</p>
