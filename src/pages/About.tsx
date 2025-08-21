@@ -2,6 +2,7 @@ import { useI18n } from '../contexts/I18nContext'
 import { useEffect, useState, useMemo } from 'react'
 import { apiClient } from '../api/generated/client'
 import { useSeoMeta } from '../hooks/useSeoMeta'
+import LoadingSkeleton from '../components/LoadingSkeleton'
 
 const FALLBACK_IMAGE = '/share-fallback.jpg'
 
@@ -74,12 +75,35 @@ function About() {
       <h1>{t('about.title')}</h1>
       <section className="about-content">
         {loading ? (
-          <div>{t('common.loading')}</div>
+          <LoadingSkeleton type="page" />
         ) : error ? (
-          <div className="form-error">{t('about.error_loading')}</div>
+          <div className="error-state">
+            <div className="error-icon" aria-hidden="true">⚠️</div>
+            <h2>{t('about.error_loading')}</h2>
+            <p>{t('about.error_message')}</p>
+            <div className="error-actions">
+              <button onClick={() => window.location.reload()} className="btn btn-primary">
+                {t('common.retry')}
+              </button>
+              <button onClick={() => window.location.href = '/'} className="btn btn-secondary">
+                {t('common.go_home')}
+              </button>
+            </div>
+          </div>
         ) : page ? (
           <div className="about-markdown" dangerouslySetInnerHTML={{ __html: page.contentMd }} />
-        ) : null}
+        ) : (
+          <div className="empty-state">
+            <div className="empty-icon" aria-hidden="true">📄</div>
+            <h2>{t('about.no_content_title')}</h2>
+            <p>{t('about.no_content_message')}</p>
+            <div className="empty-actions">
+              <button onClick={() => window.location.href = '/'} className="btn btn-primary">
+                {t('common.go_home')}
+              </button>
+            </div>
+          </div>
+        )}
       </section>
       <section className="about-contact">
         <h2>{t('about.contact')}</h2>
