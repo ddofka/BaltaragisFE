@@ -30,6 +30,15 @@
     "products.more_coming_soon": "More Artwork Coming Soon",
     "products.additional_pieces": "Additional pieces will be available shortly",
     "products.cta_text": "Interested in a specific piece? Contact us for availability and custom sizing options.",
+    "products.search_placeholder": "Search artwork...",
+    "products.search_products": "Search products",
+    "products.view_product": "View product",
+    "products.in_stock": "In Stock",
+    "products.notify_me": "Notify Me",
+    "products.no_results_title": "No artwork found",
+    "products.no_results_message": "Try adjusting your search terms or browse our full collection.",
+    "products.clear_search": "Clear search",
+    "products.results_count": "Showing {count} results (page {page} of {totalPages})",
     
     "product.page_title": "Product",
     "product.title": "Product",
@@ -56,7 +65,22 @@
     "page.feature_dynamic": "Dynamic content loading",
     "page.feature_seo": "SEO-friendly URLs",
     "page.feature_cms": "Content management system integration",
-    "page.feature_responsive": "Responsive design"
+    "page.feature_responsive": "Responsive design",
+    
+    "common.loading": "Loading...",
+    "common.error_loading": "Error loading content",
+    "common.retry": "Retry",
+    "common.clear_search": "Clear search",
+    "common.pagination": "Pagination",
+    "common.previous": "Previous",
+    "common.next": "Next",
+    "common.previous_page": "Go to previous page",
+    "common.next_page": "Go to next page",
+    "common.go_to_page": "Go to page {page}",
+    "common.items_per_page": "Items per page",
+    "common.select_items_per_page": "Select number of items per page",
+    "common.page": "page",
+    "common.of": "of"
   },
   
   "lt-LT": {
@@ -90,6 +114,15 @@
     "products.more_coming_soon": "Daugiau darbų netrukus",
     "products.additional_pieces": "Papildomi kūriniai bus prieinami netrukus",
     "products.cta_text": "Dominasi konkretus kūrinys? Susisiekite su mumis dėl prieinamumo ir individualių dydžių galimybių.",
+    "products.search_placeholder": "Ieškoti darbų...",
+    "products.search_products": "Ieškoti darbų",
+    "products.view_product": "Peržiūrėti darbą",
+    "products.in_stock": "Yra sandėlyje",
+    "products.notify_me": "Pranešti man",
+    "products.no_results_title": "Darbų nerasta",
+    "products.no_results_message": "Pabandykite pakeisti paieškos sąlygas arba peržiūrėkite visą kolekciją.",
+    "products.clear_search": "Išvalyti paiešką",
+    "products.results_count": "Rodoma {count} rezultatų (puslapis {page} iš {totalPages})",
     
     "product.page_title": "Darbas",
     "product.title": "Darbas",
@@ -116,6 +149,21 @@
     "page.feature_dynamic": "Dinamiškas turinio įkėlimas",
     "page.feature_seo": "SEO draugiški URL",
     "page.feature_cms": "Turinio valdymo sistemos integracija",
-    "page.feature_responsive": "Reaguojantis dizainas"
+    "page.feature_responsive": "Reaguojantis dizainas",
+    
+    "common.loading": "Kraunama...",
+    "common.error_loading": "Klaida kraunant turinį",
+    "common.retry": "Bandyti dar kartą",
+    "common.clear_search": "Išvalyti paiešką",
+    "common.pagination": "Puslapių navigacija",
+    "common.previous": "Ankstesnis",
+    "common.next": "Kitas",
+    "common.previous_page": "Eiti į ankstesnį puslapį",
+    "common.next_page": "Eiti į kitą puslapį",
+    "common.go_to_page": "Eiti į puslapį {page}",
+    "common.items_per_page": "Elementų puslapyje",
+    "common.select_items_per_page": "Pasirinkti elementų skaičių puslapyje",
+    "common.page": "puslapis",
+    "common.of": "iš"
   }
 }
