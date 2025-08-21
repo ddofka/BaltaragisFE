@@ -1,49 +1,57 @@
 import { Link } from 'react-router-dom'
 import { useI18n } from '../contexts/I18nContext'
-import { usePageTitle } from '../hooks/usePageTitle'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { apiClient } from '../api/generated/client'
+import { useSeoMeta } from '../hooks/useSeoMeta'
 
-function useMeta(title: string, description: string, image?: string) {
-  useEffect(() => {
-    document.title = title
-    const metaDesc = document.querySelector('meta[name="description"]') || document.createElement('meta')
-    metaDesc.setAttribute('name', 'description')
-    metaDesc.setAttribute('content', description)
-    document.head.appendChild(metaDesc)
-    // OpenGraph
-    const ogTitle = document.querySelector('meta[property="og:title"]') || document.createElement('meta')
-    ogTitle.setAttribute('property', 'og:title')
-    ogTitle.setAttribute('content', title)
-    document.head.appendChild(ogTitle)
-    const ogDesc = document.querySelector('meta[property="og:description"]') || document.createElement('meta')
-    ogDesc.setAttribute('property', 'og:description')
-    ogDesc.setAttribute('content', description)
-    document.head.appendChild(ogDesc)
-    if (image) {
-      const ogImg = document.querySelector('meta[property="og:image"]') || document.createElement('meta')
-      ogImg.setAttribute('property', 'og:image')
-      ogImg.setAttribute('content', image)
-      document.head.appendChild(ogImg)
-    }
-    return () => {
-      // Optionally clean up
-    }
-  }, [title, description, image])
-}
+const FALLBACK_IMAGE = '/share-fallback.jpg'
 
 function Home() {
-  const { t } = useI18n()
-  usePageTitle('home.page_title')
+  const { t, locale } = useI18n()
   const [artist, setArtist] = useState<any>(null)
   const [products, setProducts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
-  useMeta(
-    t('home.meta_title'),
-    t('home.meta_description'),
-    artist?.heroImageUrl
-  )
+  const canonical = useMemo(() => {
+    const base = window.location.origin
+    return `${base}/${locale}/`
+  }, [locale])
+
+  const breadcrumbJsonLd = useMemo(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: t('nav.home'),
+        item: canonical
+      }
+    ]
+  }), [canonical, t])
+
+  useSeoMeta({
+    title: t('home.meta_title'),
+    description: t('home.meta_description'),
+    canonical,
+    image: artist?.heroImageUrl || FALLBACK_IMAGE,
+    og: {
+      title: t('home.meta_title'),
+      description: t('home.meta_description'),
+      url: canonical,
+      type: 'website',
+      locale,
+      site_name: 'Baltaragis',
+      image: artist?.heroImageUrl || FALLBACK_IMAGE,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('home.meta_title'),
+      description: t('home.meta_description'),
+      image: artist?.heroImageUrl || FALLBACK_IMAGE,
+    },
+    jsonLd: breadcrumbJsonLd
+  })
 
   useEffect(() => {
     let mounted = true

@@ -1,16 +1,16 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useI18n } from '../contexts/I18nContext'
-import { usePageTitle } from '../hooks/usePageTitle'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { apiClient, ApiError } from '../api/generated/client'
 import LoadingSpinner from '../components/LoadingSpinner'
+import { useSeoMeta } from '../hooks/useSeoMeta'
+
+const FALLBACK_IMAGE = '/share-fallback.jpg'
 
 function ProductDetail() {
   const { slug } = useParams<{ slug: string }>()
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const navigate = useNavigate()
-  usePageTitle('product.page_title')
-
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [notFound, setNotFound] = useState(false)
@@ -41,6 +41,84 @@ function ProductDetail() {
       })
       .finally(() => setLoading(false))
   }, [slug])
+
+  // SEO meta, OG, Twitter, canonical, JSON-LD
+  const canonical = useMemo(() => {
+    const base = window.location.origin
+    return `${base}/${locale}/products/${slug}`
+  }, [locale, slug])
+
+  const image = product?.photos?.[0] || FALLBACK_IMAGE
+
+  const productJsonLd = useMemo(() => {
+    if (!product) return undefined
+    return {
+      '@context': 'https://schema.org/',
+      '@type': 'Product',
+      name: product.name,
+      image: product.photos && product.photos.length > 0 ? product.photos : [FALLBACK_IMAGE],
+      description: product.longDesc,
+      sku: product.slug,
+      offers: {
+        '@type': 'Offer',
+        priceCurrency: product.currency,
+        price: product.price,
+        availability: product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+        url: canonical,
+      },
+    }
+  }, [product, canonical])
+
+  const breadcrumbJsonLd = useMemo(() => {
+    if (!product) return undefined
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: t('nav.home'),
+          item: `${window.location.origin}/${locale}/`
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: t('nav.products'),
+          item: `${window.location.origin}/${locale}/products`
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: product.name,
+          item: canonical
+        }
+      ]
+    }
+  }, [product, canonical, locale, t])
+
+  useSeoMeta({
+    title: product ? `${product.name} – Baltaragis` : t('product.page_title'),
+    description: product ? product.longDesc : t('product.meta_description'),
+    canonical,
+    image,
+    og: {
+      title: product ? `${product.name} – Baltaragis` : t('product.page_title'),
+      description: product ? product.longDesc : t('product.meta_description'),
+      url: canonical,
+      type: 'product',
+      locale,
+      site_name: 'Baltaragis',
+      image,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product ? `${product.name} – Baltaragis` : t('product.page_title'),
+      description: product ? product.longDesc : t('product.meta_description'),
+      image,
+    },
+    jsonLd: [productJsonLd, breadcrumbJsonLd].filter(Boolean)
+  })
 
   if (loading) {
     return (
