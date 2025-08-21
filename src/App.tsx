@@ -27,106 +27,157 @@ function App() {
   return (
     <Routes>
       {/* Admin Routes */}
-      <Route path="/admin/*" element={
-        <AdminAuth>
-          <AdminLayout>
-            <Routes>
-              <Route path="/" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <AdminDashboard />
-                </Suspense>
-              } />
-              
-              {/* Products */}
-              <Route path="/products" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <ProductList />
-                </Suspense>
-              } />
-              <Route path="/products/new" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <ProductForm mode="create" />
-                </Suspense>
-              } />
-              <Route path="/products/:id/edit" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <ProductForm mode="edit" />
-                </Suspense>
-              } />
-              <Route path="/products/:id/photos" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <ProductPhotos />
-                </Suspense>
-              } />
-              
-              {/* Pages */}
-              <Route path="/pages" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <PageList />
-                </Suspense>
-              } />
-              <Route path="/pages/new" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <PageForm mode="create" />
-                </Suspense>
-              } />
-              <Route path="/pages/:id/edit" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <PageForm mode="edit" />
-                </Suspense>
-              } />
-              
-              {/* Translations */}
-              <Route path="/translations" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <TranslationManager />
-                </Suspense>
-              } />
-              
-              {/* Artist Profile */}
-              <Route path="/artist" element={
-                <Suspense fallback={<LoadingSpinner />}>
-                  <ArtistProfile />
-                </Suspense>
-              } />
-            </Routes>
-          </AdminLayout>
-        </AdminAuth>
-      } />
+      <Route 
+        path="/admin/*" 
+        element={
+          <AdminAuth>
+            <AdminLayout>
+              <Routes>
+                <Route 
+                  path="/" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <AdminDashboard />
+                    </Suspense>
+                  } 
+                />
+                
+                {/* Products */}
+                <Route 
+                  path="/products" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ProductList />
+                    </Suspense>
+                  } 
+                />
+                <Route 
+                  path="/products/new" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ProductForm mode="create" />
+                    </Suspense>
+                  } 
+                />
+                <Route 
+                  path="/products/:id/edit" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ProductForm mode="edit" />
+                    </Suspense>
+                  } 
+                />
+                <Route 
+                  path="/products/:id/photos" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ProductPhotos />
+                    </Suspense>
+                  } 
+                />
+                
+                {/* Pages */}
+                <Route 
+                  path="/pages" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <PageList />
+                    </Suspense>
+                  } 
+                />
+                <Route 
+                  path="/pages/new" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <PageForm mode="create" />
+                    </Suspense>
+                  } 
+                />
+                <Route 
+                  path="/pages/:id/edit" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <PageForm mode="edit" />
+                    </Suspense>
+                  } 
+                />
+                
+                {/* Translations */}
+                <Route 
+                  path="/translations" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <TranslationManager />
+                    </Suspense>
+                  } 
+                />
+                
+                {/* Artist Profile */}
+                <Route 
+                  path="/artist" 
+                  element={
+                    <Suspense fallback={<LoadingSpinner />}>
+                      <ArtistProfile />
+                    </Suspense>
+                  } 
+                />
+              </Routes>
+            </AdminLayout>
+          </AdminAuth>
+        } 
+      />
 
       {/* Public Routes */}
-      <Route path="/*" element={
-        <Layout>
-          <ConnectivityCheck />
-          <Routes>
-            <Route path="/" element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <Home />
-              </Suspense>
-            } />
-            <Route path="/about" element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <About />
-              </Suspense>
-            } />
-            <Route path="/products" element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <Products />
-              </Suspense>
-            } />
-            <Route path="/products/:slug" element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <ProductDetail />
-              </Suspense>
-            } />
-            <Route path="/pages/:slug" element={
-              <Suspense fallback={<LoadingSpinner />}>
-                <GenericPage />
-              </Suspense>
-            } />
-          </Routes>
-        </Layout>
-      } />
+      <Route 
+        path="/*" 
+        element={
+          <Layout>
+            <ConnectivityCheck />
+            <Routes>
+              <Route 
+                path="/" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Home />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/about" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <About />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/products" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <Products />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/products/:slug" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <ProductDetail />
+                  </Suspense>
+                } 
+              />
+              <Route 
+                path="/pages/:slug" 
+                element={
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <GenericPage />
+                  </Suspense>
+                } 
+              />
+            </Routes>
+          </Layout>
+        } 
+      />
     </Routes>
   )
 }
