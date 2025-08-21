@@ -29,14 +29,15 @@ export default defineConfig({
     // Optimize chunk size
     chunkSizeWarningLimit: 1000,
     // Enable tree shaking
-    minify: 'esbuild',
-    esbuildOptions: {
-      drop: ['console', 'debugger']
-    }
+    minify: 'esbuild'
   },
   // Environment variables configuration
   define: {
     __API_BASE_URL__: JSON.stringify(process.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1'),
+  },
+  // ESBuild options for production
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
   },
   // Optimize dependencies
   optimizeDeps: {
