@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useI18n } from '../contexts/I18nContext'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useRef, useCallback } from 'react'
 import { apiClient, ApiError } from '../api/generated/client'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useSeoMeta } from '../hooks/useSeoMeta'
@@ -24,6 +24,24 @@ function ProductDetail() {
   const [waitlistLoading, setWaitlistLoading] = useState(false)
   const [waitlistError, setWaitlistError] = useState<string | null>(null)
   const [waitlistStatus, setWaitlistStatus] = useState<null | 'ADDED' | 'ALREADY_SUBSCRIBED' | 'NOT_ELIGIBLE'>(null)
+
+  // Gallery state for keyboard navigation
+  const [galleryIdx, setGalleryIdx] = useState(0)
+  const galleryRef = useRef<HTMLDivElement>(null)
+
+  // Keyboard navigation for gallery
+  const handleGalleryKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (!product?.photos?.length) return
+    if (e.key === 'ArrowRight') {
+      setGalleryIdx((idx) => (idx + 1) % product.photos.length)
+    } else if (e.key === 'ArrowLeft') {
+      setGalleryIdx((idx) => (idx - 1 + product.photos.length) % product.photos.length)
+    }
+  }, [product])
+
+  // Responsive srcSet for gallery images (simulate @2x if not provided)
+  const getSrcSet = (url: string) => `${url} 1x, ${url.replace(/(\.[a-z]+)$/, '@2x$1')} 2x`
+  const gallerySizes = '(max-width: 800px) 100vw, 600px'
 
   useEffect(() => {
     if (!slug) return
@@ -159,11 +177,25 @@ function ProductDetail() {
     <div className="page product-detail-page">
       <h1>{product.name}</h1>
       <section className="product-detail">
-        <div className="product-gallery">
+        <div
+          className="product-gallery aspect-ratio-1-1"
+          tabIndex={0}
+          ref={galleryRef}
+          onKeyDown={handleGalleryKeyDown}
+          aria-label={t('product.gallery_aria_label', { name: product.name })}
+        >
           {product.photos && product.photos.length > 0 ? (
             <div className="gallery-list">
               {product.photos.map((url: string, idx: number) => (
-                <img key={idx} src={url} alt={product.name} className="gallery-photo" loading="lazy" />
+                <GalleryImage
+                  key={idx}
+                  url={url}
+                  alt={t('product.gallery_image_alt', { name: product.name, idx: idx + 1 })}
+                  active={galleryIdx === idx}
+                  onClick={() => setGalleryIdx(idx)}
+                  srcSet={getSrcSet(url)}
+                  sizes={gallerySizes}
+                />
               ))}
             </div>
           ) : (
@@ -321,3 +353,31 @@ function ProductDetail() {
 }
 
 export default ProductDetail
+
+// GalleryImage subcomponent
+function GalleryImage({ url, alt, active, onClick, srcSet, sizes }: { url: string, alt: string, active: boolean, onClick: () => void, srcSet: string, sizes: string }) {
+  const [imgLoaded, setImgLoaded] = useState(false)
+  return (
+    <button
+      className={`gallery-image-btn${active ? ' active' : ''}`}
+      tabIndex={active ? 0 : -1}
+      aria-current={active}
+      aria-label={alt}
+      onClick={onClick}
+      style={{ outline: active ? '2px solid #3498db' : undefined }}
+    >
+      <div className="gallery-image aspect-ratio-1-1">
+        <img
+          src={url}
+          srcSet={srcSet}
+          sizes={sizes}
+          alt={alt}
+          loading="lazy"
+          className={`gallery-img ${imgLoaded ? 'loaded' : 'blur'}`}
+          onLoad={() => setImgLoaded(true)}
+        />
+        {!imgLoaded && <div className="gallery-image-skeleton" aria-hidden="true"></div>}
+      </div>
+    </button>
+  )
+}

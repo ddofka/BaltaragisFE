@@ -68,11 +68,25 @@ function Home() {
     return () => { mounted = false }
   }, [])
 
+  // Responsive srcSet for hero image (simulate @2x if not provided)
+  const getSrcSet = (url: string) => `${url} 1x, ${url.replace(/(\.[a-z]+)$/, '@2x$1')} 2x`
+  const heroSizes = '(max-width: 600px) 100vw, 800px'
+  const featuredSizes = '(max-width: 600px) 100vw, 280px'
+
   return (
     <div className="page home-page">
       <section className="hero">
         {artist && artist.heroImageUrl && (
-          <img src={artist.heroImageUrl} alt={artist.name} className="hero-image" loading="eager" />
+          <div className="hero-image aspect-ratio-16-9">
+            <img
+              src={artist.heroImageUrl}
+              srcSet={getSrcSet(artist.heroImageUrl)}
+              sizes={heroSizes}
+              alt={t('home.hero_image_alt', { name: artist.name })}
+              loading="eager"
+              className="hero-img"
+            />
+          </div>
         )}
         <h1>{artist ? artist.name : t('home.welcome')}</h1>
         <p>{artist ? artist.bio : t('home.subtitle')}</p>
@@ -94,11 +108,20 @@ function Home() {
           ) : products.length > 0 ? (
             products.map(product => (
               <Link to={`/products/${product.slug}`} key={product.id} className="featured-product-card">
-                {product.thumbnailUrl ? (
-                  <img src={product.thumbnailUrl} alt={product.name} className="featured-product-img" loading="lazy" />
-                ) : (
-                  <div className="product-image-placeholder"><span>🎨</span></div>
-                )}
+                <div className="featured-product-image aspect-ratio-1-1">
+                  {product.thumbnailUrl ? (
+                    <img
+                      src={product.thumbnailUrl}
+                      srcSet={getSrcSet(product.thumbnailUrl)}
+                      sizes={featuredSizes}
+                      alt={t('products.product_image_alt', { name: product.name })}
+                      loading="lazy"
+                      className="featured-product-img"
+                    />
+                  ) : (
+                    <div className="product-image-placeholder"><span>🎨</span></div>
+                  )}
+                </div>
                 <div className="featured-product-info">
                   <div className="featured-product-name">{product.name}</div>
                   <div className="featured-product-price">{product.price} {product.currency}</div>
