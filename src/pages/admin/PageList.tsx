@@ -116,8 +116,8 @@ function PageList() {
             alignItems: 'center',
             transition: 'background-color 0.2s'
           }}
-          onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
-          onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
+          onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#1d4ed8'}
+          onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#2563eb'}
         >
           <svg style={{ width: '16px', height: '16px', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

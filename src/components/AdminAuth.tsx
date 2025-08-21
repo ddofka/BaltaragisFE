@@ -142,8 +142,8 @@ function AdminAuth({ children }: AdminAuthProps) {
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
-              onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
+              onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#1d4ed8'}
+              onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#2563eb'}
             >
               Login
             </button>
@@ -197,8 +197,8 @@ function AdminAuth({ children }: AdminAuthProps) {
             alignItems: 'center'
           }}
           title="Logout from admin"
-          onMouseOver={(e) => e.target.style.backgroundColor = '#b91c1c'}
-          onMouseOut={(e) => e.target.style.backgroundColor = '#dc2626'}
+          onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#b91c1c'}
+          onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#dc2626'}
         >
           <svg style={{ width: '16px', height: '16px', marginRight: '4px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

@@ -150,14 +150,14 @@ function AdminLayout({ children }: AdminLayoutProps) {
                   onClick={() => setSidebarOpen(false)}
                   onMouseOver={(e) => {
                     if (!isActive) {
-                      e.target.style.backgroundColor = '#f9fafb'
-                      e.target.style.color = '#111827'
+                      (e.target as HTMLElement).style.backgroundColor = '#f9fafb';
+                      (e.target as HTMLElement).style.color = '#111827'
                     }
                   }}
                   onMouseOut={(e) => {
                     if (!isActive) {
-                      e.target.style.backgroundColor = 'transparent'
-                      e.target.style.color = '#374151'
+                      (e.target as HTMLElement).style.backgroundColor = 'transparent';
+                      (e.target as HTMLElement).style.color = '#374151'
                     }
                   }}
                 >
@@ -198,8 +198,8 @@ function AdminLayout({ children }: AdminLayoutProps) {
               textDecoration: 'none',
               transition: 'color 0.2s'
             }}
-            onMouseOver={(e) => e.target.style.color = '#374151'}
-            onMouseOut={(e) => e.target.style.color = '#6b7280'}
+            onMouseOver={(e) => (e.target as HTMLElement).style.color = '#374151'}
+            onMouseOut={(e) => (e.target as HTMLElement).style.color = '#6b7280'}
           >
             <svg style={{ width: '16px', height: '16px', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

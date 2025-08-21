@@ -237,8 +237,8 @@ function AdminDashboard() {
               textDecoration: 'none',
               transition: 'background-color 0.2s'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#dbeafe'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#eff6ff'}
+            onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#dbeafe'}
+            onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#eff6ff'}
           >
             <svg style={{ width: '16px', height: '16px', color: '#2563eb', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -259,8 +259,8 @@ function AdminDashboard() {
               textDecoration: 'none',
               transition: 'background-color 0.2s'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#dcfce7'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#f0fdf4'}
+            onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#dcfce7'}
+            onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#f0fdf4'}
           >
             <svg style={{ width: '16px', height: '16px', color: '#16a34a', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -281,8 +281,8 @@ function AdminDashboard() {
               textDecoration: 'none',
               transition: 'background-color 0.2s'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#f3e8ff'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#faf5ff'}
+            onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#f3e8ff'}
+            onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#faf5ff'}
           >
             <svg style={{ width: '16px', height: '16px', color: '#9333ea', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -303,8 +303,8 @@ function AdminDashboard() {
               textDecoration: 'none',
               transition: 'background-color 0.2s'
             }}
-            onMouseOver={(e) => e.target.style.backgroundColor = '#ffedd5'}
-            onMouseOut={(e) => e.target.style.backgroundColor = '#fff7ed'}
+            onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#ffedd5'}
+            onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = '#fff7ed'}
           >
             <svg style={{ width: '16px', height: '16px', color: '#ea580c', marginRight: '8px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />

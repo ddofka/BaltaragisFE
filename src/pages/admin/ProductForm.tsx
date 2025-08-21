@@ -357,8 +357,8 @@ function ProductForm({ mode }: ProductFormProps) {
                 cursor: 'pointer',
                 transition: 'background-color 0.2s'
               }}
-              onMouseOver={(e) => e.target.style.backgroundColor = '#f9fafb'}
-              onMouseOut={(e) => e.target.style.backgroundColor = 'white'}
+              onMouseOver={(e) => (e.target as HTMLElement).style.backgroundColor = '#f9fafb'}
+              onMouseOut={(e) => (e.target as HTMLElement).style.backgroundColor = 'white'}
             >
               Cancel
             </button>
@@ -379,10 +379,10 @@ function ProductForm({ mode }: ProductFormProps) {
                 alignItems: 'center'
               }}
               onMouseOver={(e) => {
-                if (!saving) e.target.style.backgroundColor = '#1d4ed8'
+                if (!saving) (e.target as HTMLElement).style.backgroundColor = '#1d4ed8'
               }}
               onMouseOut={(e) => {
-                if (!saving) e.target.style.backgroundColor = '#2563eb'
+                if (!saving) (e.target as HTMLElement).style.backgroundColor = '#2563eb'
               }}
             >
               {saving && (
