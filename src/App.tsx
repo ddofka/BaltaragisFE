@@ -1,24 +1,46 @@
 import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import Layout from './components/Layout.tsx'
-import Home from './pages/Home.tsx'
-import About from './pages/About.tsx'
-import Products from './pages/Products.tsx'
-import ProductDetail from './pages/ProductDetail.tsx'
-import GenericPage from './pages/GenericPage.tsx'
-import NotFound from './pages/NotFound.tsx'
 import ConnectivityCheck from './components/ConnectivityCheck.tsx'
+import LoadingSpinner from './components/LoadingSpinner.tsx'
+
+// Lazy load page components for code splitting
+const Home = lazy(() => import('./pages/Home.tsx'))
+const About = lazy(() => import('./pages/About.tsx'))
+const Products = lazy(() => import('./pages/Products.tsx'))
+const ProductDetail = lazy(() => import('./pages/ProductDetail.tsx'))
+const GenericPage = lazy(() => import('./pages/GenericPage.tsx'))
 
 function App() {
   return (
     <Layout>
       <ConnectivityCheck />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:slug" element={<ProductDetail />} />
-        <Route path="/pages/:slug" element={<GenericPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <Home />
+          </Suspense>
+        } />
+        <Route path="/about" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <About />
+          </Suspense>
+        } />
+        <Route path="/products" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <Products />
+          </Suspense>
+        } />
+        <Route path="/products/:slug" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <ProductDetail />
+          </Suspense>
+        } />
+        <Route path="/pages/:slug" element={
+          <Suspense fallback={<LoadingSpinner />}>
+            <GenericPage />
+          </Suspense>
+        } />
       </Routes>
     </Layout>
   )

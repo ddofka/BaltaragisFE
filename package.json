@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:analyze": "tsc && vite build --mode analyze",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "lint": "echo 'Linting not yet configured'",
