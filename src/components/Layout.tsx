@@ -32,24 +32,25 @@ function Layout({ children }: LayoutProps) {
 
   return (
     <div className="app">
-      <header className="header">
-        <nav className="nav">
+      <a href="#main-content" className="skip-link">{t('common.skip_to_content')}</a>
+      <header className="header" role="banner">
+        <nav className="nav" role="navigation" aria-label={t('common.main_navigation')}>
           <div className="nav-brand">
             <Link to="/">Baltaragis</Link>
           </div>
           <ul className="nav-links">
             <li>
-              <Link to="/" className={isActive('/') ? 'active' : ''}>
+              <Link to="/" className={isActive('/') ? 'active' : ''} tabIndex={0}>
                 {t('nav.home')}
               </Link>
             </li>
             <li>
-              <Link to="/about" className={isActive('/about') ? 'active' : ''}>
+              <Link to="/about" className={isActive('/about') ? 'active' : ''} tabIndex={0}>
                 {t('nav.about')}
               </Link>
             </li>
             <li>
-              <Link to="/products" className={isActive('/products') ? 'active' : ''}>
+              <Link to="/products" className={isActive('/products') ? 'active' : ''} tabIndex={0}>
                 {t('nav.products')}
               </Link>
             </li>
@@ -57,12 +58,10 @@ function Layout({ children }: LayoutProps) {
           <LanguageSwitcher />
         </nav>
       </header>
-
-      <main className="main">
+      <main className="main" id="main-content" role="main" tabIndex={-1}>
         {children}
       </main>
-
-      <footer className="footer">
+      <footer className="footer" role="contentinfo">
         <p>&copy; 2025 Baltaragis. All rights reserved.</p>
       </footer>
     </div>

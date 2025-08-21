@@ -182,7 +182,7 @@ function ProductDetail() {
           tabIndex={0}
           ref={galleryRef}
           onKeyDown={handleGalleryKeyDown}
-          aria-label={t('product.gallery_aria_label', { name: product.name })}
+          aria-label={t('product.gallery_aria_label') + ' ' + product.name}
         >
           {product.photos && product.photos.length > 0 ? (
             <div className="gallery-list">
@@ -190,7 +190,7 @@ function ProductDetail() {
                 <GalleryImage
                   key={idx}
                   url={url}
-                  alt={t('product.gallery_image_alt', { name: product.name, idx: idx + 1 })}
+                  alt={t('product.gallery_image_alt') + ' ' + product.name + ' ' + (idx + 1)}
                   active={galleryIdx === idx}
                   onClick={() => setGalleryIdx(idx)}
                   srcSet={getSrcSet(url)}
@@ -213,7 +213,7 @@ function ProductDetail() {
           {product.inStock && (
             <div className="order-form">
               {orderSuccess ? (
-                <div className="order-success">
+                <div className="order-success" aria-live="polite">
                   <h3>{t('product.order_success_title')}</h3>
                   <p>{t('product.order_success_message')}</p>
                 </div>
@@ -249,6 +249,7 @@ function ProductDetail() {
                     }
                   }}
                   className="order-fields"
+                  aria-live="polite"
                 >
                   <div className="form-group">
                     <label htmlFor="qty">{t('product.quantity')}</label>
@@ -275,7 +276,7 @@ function ProductDetail() {
                       placeholder={t('product.email_placeholder')}
                     />
                   </div>
-                  {orderError && <div className="form-error">{orderError}</div>}
+                  {orderError && <div className="form-error" aria-live="assertive">{orderError}</div>}
                   <button type="submit" className="btn btn-primary" disabled={orderLoading || !orderEmail}>
                     {orderLoading ? t('common.loading') : t('product.buy_now')}
                   </button>
@@ -287,12 +288,12 @@ function ProductDetail() {
           {!product.inStock && (
             <div className="waitlist-form">
               {waitlistStatus === 'ADDED' ? (
-                <div className="waitlist-success">
+                <div className="waitlist-success" aria-live="polite">
                   <h3>{t('product.waitlist_success_title')}</h3>
                   <p>{t('product.waitlist_success_message')}</p>
                 </div>
               ) : waitlistStatus === 'ALREADY_SUBSCRIBED' ? (
-                <div className="waitlist-info">
+                <div className="waitlist-info" aria-live="polite">
                   <h3>{t('product.waitlist_already_title')}</h3>
                   <p>{t('product.waitlist_already_message')}</p>
                 </div>
@@ -325,6 +326,7 @@ function ProductDetail() {
                     }
                   }}
                   className="waitlist-fields"
+                  aria-live="polite"
                 >
                   <div className="form-group">
                     <label htmlFor="waitlist-email">{t('product.email')}</label>
@@ -338,7 +340,7 @@ function ProductDetail() {
                       placeholder={t('product.email_placeholder')}
                     />
                   </div>
-                  {waitlistError && <div className="form-error">{waitlistError}</div>}
+                  {waitlistError && <div className="form-error" aria-live="assertive">{waitlistError}</div>}
                   <button type="submit" className="btn btn-primary" disabled={waitlistLoading || !waitlistEmail}>
                     {waitlistLoading ? t('common.loading') : t('product.waitlist_notify_me')}
                   </button>

@@ -45,7 +45,7 @@ function ProductCard({ product, onNavigate }: ProductCardProps) {
               src={product.thumbnailUrl} 
               srcSet={srcSet}
               sizes={sizes}
-              alt={t('products.product_image_alt', { name: product.name })}
+              alt={t('products.product_image_alt') + ' ' + product.name}
               loading="lazy"
               className={`product-img ${imgLoaded ? 'loaded' : 'blur'}`}
               onLoad={() => setImgLoaded(true)}

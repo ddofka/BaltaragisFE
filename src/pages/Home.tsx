@@ -82,7 +82,7 @@ function Home() {
               src={artist.heroImageUrl}
               srcSet={getSrcSet(artist.heroImageUrl)}
               sizes={heroSizes}
-              alt={t('home.hero_image_alt', { name: artist.name })}
+              alt={t('home.hero_image_alt') + ' ' + artist.name}
               loading="eager"
               className="hero-img"
             />
@@ -114,7 +114,7 @@ function Home() {
                       src={product.thumbnailUrl}
                       srcSet={getSrcSet(product.thumbnailUrl)}
                       sizes={featuredSizes}
-                      alt={t('products.product_image_alt', { name: product.name })}
+                      alt={t('products.product_image_alt') + ' ' + product.name}
                       loading="lazy"
                       className="featured-product-img"
                     />
