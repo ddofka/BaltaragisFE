@@ -18,4 +18,8 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: true,
   },
+  // Environment variables configuration
+  define: {
+    __API_BASE_URL__: JSON.stringify(process.env.VITE_API_BASE_URL || 'http://localhost:3000/api/v1'),
+  },
 })

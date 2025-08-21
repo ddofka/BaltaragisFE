@@ -98,7 +98,12 @@ VITE_API_BASE_URL=http://localhost:8080/api/v1
 
 # Point to different backend
 VITE_API_BASE_URL=https://api.baltaragis.dev/api/v1
+
+# Production (required for deployment)
+VITE_API_BASE_URL=https://api.baltaragis.com/api/v1
 ```
+
+**Important**: For production deployment, you must set `VITE_API_BASE_URL=https://api.baltaragis.com/api/v1` to ensure the frontend connects to the production API endpoint.
 
 ### API Client Location
 
@@ -171,6 +176,19 @@ Translations are managed via the backend admin API:
 #### Sample Translations
 
 See `docs/translations-sample.json` for the complete translation structure expected by the frontend.
+
+### Sitemap and SEO
+
+The frontend provides minimal sitemap functionality that works in conjunction with the API:
+
+- **`/robots.txt`** - Points to the API sitemap as the source of truth
+- **`/sitemap.xml`** - Contains only static routes (home, about, products)
+- **Dynamic URLs** - Products and CMS pages are managed by the API sitemap
+
+This approach ensures:
+- Search engines can discover all content
+- The frontend sitemap stays current without rebuilding
+- Dynamic content (products, CMS pages) is always up-to-date via the API
 
 ### CORS Configuration
 
