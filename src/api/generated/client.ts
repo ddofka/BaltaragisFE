@@ -99,20 +99,39 @@ class ApiClient {
     });
   }
 
-  // PUT requests (available for future use)
-  // private async put<T>(endpoint: string, data?: any): Promise<T> {
+  // PUT requests
+  private async put<T>(endpoint: string, data?: any): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'PUT',
+      body: data ? JSON.stringify(data) : undefined,
+    });
+  }
+
+  // DELETE requests
+  private async delete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'DELETE',
+    });
+  }
+
+  // PATCH requests (available for future use)
+  // private async patch<T>(endpoint: string, data?: any): Promise<T> {
   //   return this.request<T>(endpoint, {
-  //     method: 'PUT',
+  //     method: 'PATCH',
   //     body: data ? JSON.stringify(data) : undefined,
   //   });
   // }
 
-  // DELETE requests (available for future use)
-  // private async delete<T>(endpoint: string): Promise<T> {
-  //   return this.request<T>(endpoint, {
-  //     method: 'DELETE',
-  //   });
-  // }
+  // POST with FormData (for file uploads)
+  private async postFormData<T>(endpoint: string, formData: FormData): Promise<T> {
+    return this.request<T>(endpoint, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        // Don't set Content-Type for FormData - browser will set it with boundary
+      },
+    });
+  }
 
   // Public API endpoints
 
@@ -180,6 +199,95 @@ class ApiClient {
   // GET /api/v1/orders/checkout-session/status
   async getCheckoutSessionStatus(sessionId: string): Promise<string> {
     return this.get<string>('/orders/checkout-session/status', { sessionId });
+  }
+
+  // ========== ADMIN ENDPOINTS ==========
+
+  // Admin Products
+  async getAllProductsAdmin(): Promise<types.Product[]> {
+    return this.get<types.Product[]>('/admin/products');
+  }
+
+  async getProductByIdAdmin(id: number): Promise<types.Product> {
+    return this.get<types.Product>(`/admin/products/${id}`);
+  }
+
+  async createProduct(data: types.CreateProductRequest): Promise<types.Product> {
+    return this.post<types.Product>('/admin/products', data);
+  }
+
+  async updateProduct(id: number, data: types.UpdateProductRequest): Promise<types.Product> {
+    return this.put<types.Product>(`/admin/products/${id}`, data);
+  }
+
+  async deleteProduct(id: number): Promise<void> {
+    return this.delete<void>(`/admin/products/${id}`);
+  }
+
+  // Admin Product Photos
+  async getPhotosByProductId(productId: number): Promise<types.ProductPhoto[]> {
+    return this.get<types.ProductPhoto[]>(`/admin/product-photos/product/${productId}`);
+  }
+
+  async uploadProductPhoto(productId: number, file: File): Promise<types.PhotoUploadResponse> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.postFormData<types.PhotoUploadResponse>(`/admin/products/${productId}/photos/upload`, formData);
+  }
+
+  async updateProductPhoto(photoId: number, data: types.UpdateProductPhotoRequest): Promise<types.ProductPhoto> {
+    return this.put<types.ProductPhoto>(`/admin/product-photos/${photoId}`, data);
+  }
+
+  async deleteProductPhoto(photoId: number): Promise<void> {
+    return this.delete<void>(`/admin/product-photos/${photoId}`);
+  }
+
+  // Admin Translations
+  async upsertTranslation(data: types.CreateTranslationRequest): Promise<types.TranslationResponse> {
+    return this.post<types.TranslationResponse>('/admin/translations', data);
+  }
+
+  async bulkUpsertTranslations(data: types.BulkTranslationRequest): Promise<types.TranslationResponse[]> {
+    return this.post<types.TranslationResponse[]>('/admin/translations/bulk', data);
+  }
+
+  async getTranslationsByLocale(locale: string): Promise<types.TranslationResponse[]> {
+    return this.get<types.TranslationResponse[]>(`/admin/translations/locale/${locale}`);
+  }
+
+  async getTranslationsByKey(key: string): Promise<types.TranslationResponse[]> {
+    return this.get<types.TranslationResponse[]>(`/admin/translations/key/${key}`);
+  }
+
+  async deleteTranslation(key: string, locale: string): Promise<void> {
+    return this.delete<void>(`/admin/translations/${key}/${locale}`);
+  }
+
+  // Admin Pages
+  async getAllPagesAdmin(): Promise<types.Page[]> {
+    return this.get<types.Page[]>('/admin/pages');
+  }
+
+  async getPageByIdAdmin(id: number): Promise<types.Page> {
+    return this.get<types.Page>(`/admin/pages/${id}`);
+  }
+
+  async createPage(data: types.CreatePageRequest): Promise<types.Page> {
+    return this.post<types.Page>('/admin/pages', data);
+  }
+
+  async updatePage(id: number, data: types.UpdatePageRequest): Promise<types.Page> {
+    return this.put<types.Page>(`/admin/pages/${id}`, data);
+  }
+
+  async deletePage(id: number): Promise<void> {
+    return this.delete<void>(`/admin/pages/${id}`);
+  }
+
+  // Admin Artist Profile
+  async updateArtistProfile(data: types.UpdateArtistProfileRequest): Promise<types.ArtistProfile> {
+    return this.put<types.ArtistProfile>('/admin/artist', data);
   }
 }
 
