@@ -7,7 +7,9 @@ import { PageProductCard } from '../api/generated/types'
 import ProductCardComponent from '../components/ProductCard'
 import SearchInput from '../components/SearchInput'
 import Pagination from '../components/Pagination'
-import LoadingSkeleton from '../components/LoadingSkeleton'
+import LoadingSpinner from '../components/LoadingSpinner'
+import { cacheManager, generateCacheKey } from '../utils/cache'
+import { prefetchProducts } from '../utils/prefetch'
 
 function Products() {
   const { t } = useI18n()
@@ -33,15 +35,45 @@ function Products() {
     size
   }), [query, page, size])
   
-  // Fetch products with ETag support
+  // Fetch products with caching support
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
       
-      // Use the generated API client
+      // Check cache first
+      const cacheKey = generateCacheKey('products', apiParams)
+      const cached = await cacheManager.get<PageProductCard>(cacheKey)
+      
+      if (cached) {
+        setProducts(cached)
+        setLoading(false)
+        
+        // Prefetch product details for the current page
+        if (cached.content && cached.content.length > 0) {
+          const slugs = cached.content.map(p => p.slug)
+          prefetchProducts(slugs)
+        }
+        
+        // Refresh in background (stale-while-revalidate)
+        apiClient.getProducts(apiParams).then(freshData => {
+          cacheManager.set(cacheKey, freshData)
+          setProducts(freshData)
+        }).catch(console.error)
+        
+        return
+      }
+      
+      // Fetch fresh data if not cached
       const data = await apiClient.getProducts(apiParams)
+      cacheManager.set(cacheKey, data)
       setProducts(data)
+      
+      // Prefetch product details
+      if (data.content && data.content.length > 0) {
+        const slugs = data.content.map(p => p.slug)
+        prefetchProducts(slugs)
+      }
     } catch (err) {
       console.error('Error fetching products:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch products')
@@ -99,11 +131,10 @@ function Products() {
   if (loading && !products) {
     return (
       <div className="page products-page">
-        <header className="products-header">
-          <h1>{t('products.title')}</h1>
-          <p className="products-intro">{t('products.intro')}</p>
-        </header>
-        <LoadingSkeleton type="grid" count={12} />
+        <div className="loading-container">
+          <LoadingSpinner />
+          <p>{t('common.loading')}</p>
+        </div>
       </div>
     )
   }
@@ -142,22 +173,17 @@ function Products() {
         />
         
         <div className="empty-state">
-          <div className="empty-icon" aria-hidden="true">🎨</div>
+          <div className="empty-icon">🎨</div>
           <h2>{t('products.no_results_title')}</h2>
           <p>{t('products.no_results_message')}</p>
-          <div className="empty-actions">
-            {query && (
-              <button 
-                onClick={() => handleSearch('')}
-                className="btn btn-primary"
-              >
-                {t('products.clear_search')}
-              </button>
-            )}
-            <button onClick={() => navigate('/')} className="btn btn-secondary">
-              {t('common.go_home')}
+          {query && (
+            <button 
+              onClick={() => handleSearch('')}
+              className="btn btn-secondary"
+            >
+              {t('products.clear_search')}
             </button>
-          </div>
+          )}
         </div>
       </div>
     )

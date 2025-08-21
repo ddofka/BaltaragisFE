@@ -44,12 +44,13 @@ class ErrorBoundary extends Component<Props, State> {
 
 // Functional component for the error fallback with translations
 function ErrorFallback({ error, errorInfo }: { error?: Error; errorInfo?: ErrorInfo }) {
+  // We'll use a simple approach for now since ErrorBoundary is a class component
+  // In a real app, you might want to use a different pattern or context
   return (
     <div className="error-boundary">
       <div className="error-content">
-        <div className="error-icon" aria-hidden="true">😵</div>
-        <h1>Something went wrong</h1>
-        <p>We're sorry, but something unexpected happened. Please try refreshing the page or go back to the homepage.</p>
+        <h1>😵 Something went wrong</h1>
+        <p>We're sorry, but something unexpected happened. Please try refreshing the page.</p>
         {process.env.NODE_ENV === 'development' && error && (
           <details className="error-details">
             <summary>Error Details (Development)</summary>
@@ -59,17 +60,12 @@ function ErrorFallback({ error, errorInfo }: { error?: Error; errorInfo?: ErrorI
             )}
           </details>
         )}
-        <div className="error-actions">
-          <button 
-            onClick={() => window.location.reload()} 
-            className="btn btn-primary"
-          >
-            Refresh Page
-          </button>
-          <a href="/" className="btn btn-secondary">
-            Go Home
-          </a>
-        </div>
+        <button 
+          onClick={() => window.location.reload()} 
+          className="error-button"
+        >
+          Refresh Page
+        </button>
       </div>
     </div>
   )
